@@ -1,6 +1,10 @@
 web-commander
 ===
 
+![NPM](https://img.shields.io/npm/v/web-commander.svg)
+![License](https://img.shields.io/npm/l/web-commander.svg)
+![Downloads](https://img.shields.io/npm/dt/web-commander.svg)
+
 This is a lite server to execute commands according to web requests.
 
 Installation
