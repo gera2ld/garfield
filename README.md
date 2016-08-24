@@ -55,6 +55,10 @@ Document
 
     `null` for unlimited. Array of methods (`GET`, `POST`, etc.) for allowed methods.
 
+  * predicate (optional)
+
+    Function called with two parameters: `payload` and `method`. If returned value is falsy, the command will not be executed.
+
   * allowConcurrency (optional)
 
     Whether concurrent execution is allowed. Default as `false`.
