@@ -1,0 +1,33 @@
+{
+  "name": "web-commander",
+  "version": "0.1.0",
+  "description": "Web server to execute commands.",
+  "main": "index.js",
+  "bin": {
+    "web-commander": "bin/start.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "command",
+    "commander"
+  ],
+  "author": "Gerald <i@gerald.top>",
+  "license": "MIT",
+  "dependencies": {
+    "argparse": "^1.0.7",
+    "koa": "^1.2.1",
+    "koa-bodyparser": "^2.2.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gera2ld/web-commander.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gera2ld/web-commander/issues"
+  },
+  "homepage": "https://github.com/gera2ld/web-commander#readme"
+}
