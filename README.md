@@ -57,7 +57,9 @@ Document
 
   * predicate (optional)
 
-    Function called with two parameters: `payload` and `method`. If returned value is falsy, the command will not be executed.
+    Function called with two parameters: `payload` and `method`.
+    If returned value is falsy, the command will not be executed.
+    If returned value is an object, `command`, `cwd`, `env`, `timeout` can be overridden with its properties.
 
   * allowConcurrency (optional)
 
