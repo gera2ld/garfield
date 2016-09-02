@@ -58,3 +58,13 @@ h1 {
 .col-buttons {
   width: 6rem;
 }
+
+.state-run {
+  color: #333;
+}
+.state-fin {
+  color: gray;
+}
+.state-err {
+  color: red;
+}

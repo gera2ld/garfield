@@ -5,6 +5,7 @@ module.exports = {
     predicate: (payload, method) => {
       return true;
       // return {
+      //   description: 'override greet',
       //   command: 'echo "Command overridden"',
       // };
     },

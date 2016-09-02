@@ -47,33 +47,41 @@ Document
   Exports an object for commands. Each key as the name of command, and value as the command options.
   The value may have properties below:
 
-  * command (required)
-
-    String, space-separated arguments
-
-  * methods (optional)
+  * methods
 
     `null` for unlimited. Array of methods (`GET`, `POST`, etc.) for allowed methods.
 
-  * predicate (optional)
+  * predicate
 
     Function called with two parameters: `payload` and `method`.
     If returned value is falsy, the command will not be executed.
-    If returned value is an object, `command`, `cwd`, `env`, `timeout` can be overridden with its properties.
+    Otherwise, the returned value will override the pre-defined properties of this command.
 
-  * allowConcurrency (optional)
+  * description
+
+    String, description of this command.
+
+  * command
+
+    String, space-separated arguments.
+
+  * jobKey
+
+    A key of the running command, used to count the concurrent processes doing the same thing.
+
+  * concurrent
 
     Whether concurrent execution is allowed. Default as `false`.
 
-  * cwd (optional)
+  * cwd
 
     Same as that in `child_process.exec`.
 
-  * env (optional)
+  * env
 
     Same as that in `child_process.exec`.
 
-  * timeout (optional)
+  * timeout
 
     Same as that in `child_process.exec`.
 

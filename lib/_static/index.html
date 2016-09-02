@@ -17,7 +17,7 @@
       <span class="col-state">State</span>
       <span class="col-buttons">Buttons</span>
     </div>
-    <div v-for="item in jobs" class="row">
+    <div v-for="item in jobs" class="row" :class="'state-'+item.state">
       <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
         <div v-text="item.description"></div>
