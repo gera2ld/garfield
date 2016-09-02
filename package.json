@@ -18,8 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "argparse": "^1.0.7",
-    "koa": "^1.2.1",
-    "koa-bodyparser": "^2.2.0"
+    "koa-bodyparser": "^2.2.0",
+    "koa.io": "0.0.3"
   },
   "devDependencies": {},
   "repository": {
