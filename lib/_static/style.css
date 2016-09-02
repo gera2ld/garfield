@@ -1,0 +1,51 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-size: 18px;
+}
+
+h1 {
+  text-align: center;
+  margin: 1em 0;
+}
+
+#messageboard {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.row, .column {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+  text-align: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+li.row:nth-child(odd) {
+  background: #E8E8E8;
+}
+
+.col-id {
+  width: 2em;
+}
+
+.col-state {
+  width: 3em;
+}
+
+.col-message {
+  width: 10em;
+}
