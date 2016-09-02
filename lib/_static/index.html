@@ -6,24 +6,24 @@
   <link rel="stylesheet" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css">
   <link rel="stylesheet" href="./_static/style.css">
   <script src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
-  <script src="//cdn.bootcss.com/vue/1.0.26/vue.min.js"></script>
+  <script src="//cdn.bootcss.com/vue/2.0.0-rc.4/vue.js"></script>
 </head>
 <body>
   <h1>Web Commander</h1>
-  <div id="messageboard" class="column">
+  <div id="dashboard" class="column">
     <div class="row row-head">
       <span class="col-id">ID</span>
       <span class="flex-1">Description</span>
       <span class="col-state">State</span>
       <span class="col-buttons">Buttons</span>
     </div>
-    <div v-for="item in messages" class="row">
-      <div class="col-id">{{ item.id }}</div>
+    <div v-for="item in jobs" class="row">
+      <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
         <div v-text="item.description"></div>
         <div v-if="item.message" v-text="item.message"></div>
       </div>
-      <div class="col-state">{{ item.state }}</div>
+      <div class="col-state" v-text="item.state"></div>
       <div class="col-buttons"></div>
     </div>
   </div>

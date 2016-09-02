@@ -8,8 +8,8 @@ h1 {
   margin: 2rem 0;
 }
 
-#messageboard {
-  width: 800px;
+#dashboard {
+  max-width: 960px;
   margin: 0 auto;
   border: 1px solid #bbb;
 }
