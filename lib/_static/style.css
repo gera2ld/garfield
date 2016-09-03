@@ -23,6 +23,7 @@ h1 {
 }
 
 .row > * {
+  position: relative;
   padding: .5em 1em;
 }
 
@@ -43,7 +44,7 @@ h1 {
 }
 
 .row:nth-child(odd) {
-  background: #e8e8e8;
+  background: #f8f8f8;
 }
 
 .col-id {
@@ -66,4 +67,24 @@ h1 {
 }
 .state-err {
   color: red;
+}
+
+.log-view {
+  max-height: 20em;
+  overflow: auto;
+  margin-top: .5em;
+  padding: .5em;
+  background: rgba(222,222,222,.4);
+}
+
+.label-log {
+  position: absolute;
+  right: .5rem;
+  top: .5rem;
+  padding: .2rem;
+  border-radius: .2rem;
+  background: steelblue;
+  color: white;
+  font-size: .8rem;
+  cursor: pointer;
 }

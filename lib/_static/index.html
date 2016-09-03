@@ -20,8 +20,9 @@
     <div v-for="item in jobs" class="row" :class="'state-'+item.state">
       <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
+        <div class="label-log" v-if="item.log" @click="toggleLog(item)">LOG</div>
         <div v-text="duration(item)+' '+item.description"></div>
-        <div v-if="item.message" v-text="item.message"></div>
+        <div class="log-view" v-if="item.log&&item.showLog" v-html="item.log"></div>
       </div>
       <div class="col-state" v-text="item.state"></div>
       <div class="col-buttons"></div>
