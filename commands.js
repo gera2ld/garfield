@@ -2,7 +2,7 @@ module.exports = {
   'greet': {
     description: 'Greet',
     command: 'echo "Hello world"',
-    methods: ['POST'],
+    methods: ['GET'],
     predicate: (payload, method) => {
       return true;
       // return {
