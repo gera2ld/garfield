@@ -21,7 +21,10 @@
       <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
         <div class="label-log" v-if="item.log" @click="toggleLog(item)">LOG</div>
-        <div v-text="duration(item)+' '+item.description"></div>
+        <div>
+          <span v-text="duration(item)" :title="timestamps(item)"></span>
+          <span v-text="item.description"></span>
+        </div>
         <div class="log-view" v-if="item.log&&item.showLog" v-html="item.log"></div>
       </div>
       <div class="col-state" v-text="item.state"></div>
