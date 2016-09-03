@@ -20,7 +20,7 @@
     <div v-for="item in jobs" class="row" :class="'state-'+item.state">
       <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
-        <div v-text="item.description"></div>
+        <div v-text="duration(item)+' '+item.description"></div>
         <div v-if="item.message" v-text="item.message"></div>
       </div>
       <div class="col-state" v-text="item.state"></div>
