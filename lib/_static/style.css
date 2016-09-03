@@ -41,6 +41,7 @@ h1 {
 
 .flex-1 {
   flex: 1;
+  width: 0;
 }
 
 .row:nth-child(odd) {
@@ -70,11 +71,15 @@ h1 {
 }
 
 .log-view {
-  max-height: 20em;
+  max-height: 20rem;
   overflow: auto;
-  margin-top: .5em;
-  padding: .5em;
+  margin: .5rem 0 0;
+  padding: .5rem;
+  font-size: .8rem;
   background: rgba(222,222,222,.4);
+}
+.log-err {
+  color: red;
 }
 
 .label-log {
