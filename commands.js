@@ -1,5 +1,5 @@
 module.exports = {
-  'greet': {
+  greet: {
     description: 'Greet',
     command: 'echo "Hello world"',
     methods: ['GET'],

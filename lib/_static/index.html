@@ -20,7 +20,7 @@
     <div v-for="item in jobs" :key="item.id" class="row" :class="'state-'+item.state">
       <div class="col-id" v-text="item.id"></div>
       <div class="flex-1">
-        <div class="label-log" v-if="item.log" @click="toggleLog(item)">LOG</div>
+        <div class="label-log" v-if="item.hasLogs" @click="toggleLog(item)">LOG</div>
         <div>
           <span v-text="duration(item)" :title="timestamps(item)"></span>
           <span v-text="item.description"></span>
