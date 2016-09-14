@@ -28,7 +28,9 @@
         <pre class="log-view" v-if="item.log&&item.showLog" v-html="item.log"></pre>
       </div>
       <div class="col-state" v-text="item.state"></div>
-      <div class="col-buttons"></div>
+      <div class="col-buttons">
+        <button :disabled="item.state=='run'" @click="redo(item)">Redo</button>
+      </div>
     </div>
   </div>
   <script src="./_static/app.js"></script>
