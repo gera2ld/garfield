@@ -67,11 +67,7 @@ Document
 
   * jobKey
 
-    A key of the running command, used to count the concurrent processes doing the same thing.
-
-  * concurrent
-
-    Whether concurrent execution is allowed. Default as `false`.
+    A key of the running command, used to mark the processes doing the same thing.
 
   * cwd
 

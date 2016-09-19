@@ -60,13 +60,13 @@ h1 {
   width: 6rem;
 }
 
-.state-run {
+.state-running {
   color: #333;
 }
-.state-fin {
+.state-finished {
   color: gray;
 }
-.state-err {
+.state-error {
   color: red;
 }
 
