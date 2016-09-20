@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Dashboard - Web Commander</title>
+  <link rel="shortcut icon" href="./_static/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./_static/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css">
   <link rel="stylesheet" href="./_static/style.css">
   <script src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
@@ -29,7 +31,7 @@
       </div>
       <div class="col-state" v-text="item.state"></div>
       <div class="col-buttons">
-        <button :disabled="item.state=='run'" @click="redo(item)">Redo</button>
+        <button v-if="canRedo(item)" @click="redo(item)">Redo</button>
       </div>
     </div>
   </div>
