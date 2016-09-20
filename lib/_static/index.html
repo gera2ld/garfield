@@ -20,16 +20,16 @@
       <span class="col-buttons">Buttons</span>
     </div>
     <div v-for="item in jobs" :key="item.id" class="row" :class="'state-'+item.state">
-      <div class="col-id" v-text="item.id"></div>
+      <div class="col-id state-text" v-text="item.id"></div>
       <div class="flex-1">
         <div class="label-log" v-if="item.hasLogs" @click="toggleLog(item)">LOG</div>
-        <div>
+        <div class="state-text">
           <span v-text="duration(item)" :title="timestamps(item)"></span>
           <span v-text="item.description"></span>
         </div>
         <pre class="log-view" v-if="item.log&&item.showLog" v-html="item.log"></pre>
       </div>
-      <div class="col-state" v-text="item.state"></div>
+      <div class="col-state state-text" v-text="item.state"></div>
       <div class="col-buttons">
         <button v-if="canRedo(item)" @click="redo(item)">Redo</button>
       </div>
