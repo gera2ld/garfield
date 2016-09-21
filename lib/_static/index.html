@@ -17,7 +17,7 @@
       <span class="col-id">ID</span>
       <span class="flex-1">Description</span>
       <span class="col-state">State</span>
-      <span class="col-buttons">Buttons</span>
+      <span class="col-manage">Managing</span>
     </div>
     <div v-for="item in jobs" :key="item.id" class="row" :class="'state-'+item.state">
       <div class="col-id state-text" v-text="item.id"></div>
@@ -30,8 +30,8 @@
         <pre class="log-view" v-if="item.log&&item.showLog" v-html="item.log"></pre>
       </div>
       <div class="col-state state-text" v-text="item.state"></div>
-      <div class="col-buttons">
-        <button v-if="canRedo(item)" @click="redo(item)">Redo</button>
+      <div class="col-manage">
+        <a href="#" v-if="canRedo(item)" @click.prevent="redo(item)">Redo</a>
       </div>
     </div>
   </div>

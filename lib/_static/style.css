@@ -24,7 +24,7 @@ h1 {
 
 .row > * {
   position: relative;
-  padding: .5em 1em;
+  padding: .5rem 1rem;
 }
 
 .row > *:not(:last-child) {
@@ -56,8 +56,12 @@ h1 {
   width: 6rem;
 }
 
-.col-buttons {
+.col-manage {
   width: 6rem;
+}
+.row:not(.row-head) .col-manage {
+  font-size: .8rem;
+  line-height: 1.2;
 }
 
 .state-running .state-text {
