@@ -84,14 +84,15 @@ Document
 * `web-commander`
 
   ```
-  usage: web-commander [-h] [-v] [-p PORT] [-c COMMANDS]
+  usage: web-commander [-h] [-v] [-H HOST] [-p PORT] [-c COMMANDS]
 
   Start a web command server.
 
   Optional arguments:
     -h, --help            Show this help message and exit.
     -v, --version         Show program's version number and exit.
-    -p PORT, --port PORT  the port for server to listen on
+    -H HOST, --host HOST  The server will bind to HOST, default as `0.0.0.0`.
+    -p PORT, --port PORT  The server will listen on PORT, default as 2333.
     -c COMMANDS, --commands COMMANDS
-                          the file path for commands to import
+                          Commands will be imported from COMMANDS file.
   ```
