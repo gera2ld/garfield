@@ -1,42 +1,9 @@
-html,
-body {
-  font-size: 16px;
-}
-
 h1 {
   text-align: center;
-  margin: 2rem 0;
 }
 
-#dashboard {
-  max-width: 960px;
-  margin: 0 auto;
-  border: 1px solid #bbb;
-}
-
-.row, .column {
-  display: flex;
-}
-
-.row {
-  flex-direction: row;
-}
-
-.row > * {
-  position: relative;
-  padding: .5rem 1rem;
-}
-
-.row > *:not(:last-child) {
-  border-right: 1px solid #bbb;
-}
-
-.row-head {
-  border-bottom: 1px solid #bbb;
-}
-
-.column {
-  flex-direction: column;
+.text-nowrap {
+  white-space: nowrap;
 }
 
 .flex-1 {
@@ -44,56 +11,21 @@ h1 {
   width: 0;
 }
 
-.row:nth-child(odd) {
-  background: #f8f8f8;
-}
-
-.col-id {
-  width: 4rem;
-}
-
-.col-state {
-  width: 6rem;
-}
-
-.col-manage {
-  width: 6rem;
-}
-.row:not(.row-head) .col-manage {
-  font-size: .8rem;
-  line-height: 1.2;
-}
-
-.state-running .state-text {
+.state-running.state-text {
   color: #333;
 }
-.state-finished .state-text {
+.state-finished.state-text {
   color: gray;
 }
-.state-error .state-text {
+.state-error.state-text {
   color: red;
 }
 
 .log-view {
-  max-height: 20rem;
+  height: 100vh;
   overflow: auto;
-  margin: .5rem 0 0;
-  padding: .5rem;
-  font-size: .8rem;
-  background: rgba(222,222,222,.4);
+  background: #eee;
 }
 .log-err {
   color: red;
-}
-
-.label-log {
-  position: absolute;
-  right: .5rem;
-  top: .5rem;
-  padding: .2rem;
-  border-radius: .2rem;
-  background: steelblue;
-  color: white;
-  font-size: .8rem;
-  cursor: pointer;
 }
