@@ -17,26 +17,30 @@
   <div id="dashboard"></div>
 <script id="tpl-app" type="x-template">
   <div class="container grid-960">
-    <div class="columns col-multiline">
-      <div class="column col-4 col-sm-6 col-xs-12" v-for="item in jobs">
-        <div class="card" :key="item.id">
-          <div class="card-header state-text">
-            <h4 class="card-title" v-text="item.description"></h4>
-            <div class="float-right state-text" :class="'state-'+item.state" v-text="item.state"></div>
-            <div class="card-meta">
-              [<span v-text="item.id"></span>]
-              <span class="tooltip text-nowrap" v-text="duration(item)" :data-tooltip="timestamps(item)"></span>
+    <template v-for="(list,index) in lists">
+      <div class="divider" v-if="index"></div>
+      <h6 class="text-uppercase" v-text="list.key"></h6>
+      <div class="columns col-multiline">
+        <div class="column col-4 col-sm-6 col-xs-12" v-for="item in list.items" :key="item.id">
+          <div class="card">
+            <div class="card-header state-text">
+              <h4 class="card-title" v-text="item.description"></h4>
+              <div class="float-right state-text" :class="stateClass(item)" v-text="item.state"></div>
+              <div class="card-meta">
+                [<span v-text="item.id"></span>]
+                <span class="tooltip text-nowrap" v-text="duration(item)" :data-tooltip="timestamps(item)"></span>
+              </div>
             </div>
-          </div>
-          <div class="card-footer clearfix">
-            <button class="btn btn-default btn-sm text-uppercase float-right" v-if="item.hasLogs" @click="showLog(item)">Log</button>
-            <button class="btn btn-primary btn-sm" v-if="canRedo(item)" @click="redo(item)">Redo</button>
+            <div class="card-footer clearfix">
+              <button class="btn btn-default btn-sm text-uppercase float-right" v-if="item.hasLogs" @click="showLog(item)">Log</button>
+              <button class="btn btn-primary btn-sm" v-if="canRedo(item)" @click="redo(item)">Redo</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="empty" v-if="!jobs.length">
-    <p class="empty-title">No task yet~</p>
+    </template>
+    <div class="empty" v-if="!lists.length">
+      <p class="empty-title">No task yet~</p>
     </div>
     <modal :class="{active:modal}" :item="modal" @close="closeLog"></modal>
   </div>
@@ -46,9 +50,10 @@
     <div class="modal-overlay" @click="close"></div>
     <div class="modal-container">
       <div class="modal-header">
-        <div class="modal-title" v-text="item&&item.description"></div>
+        <div class="float-right state-text" :class="stateClass" v-text="attr('state')"></div>
+        <div class="modal-title" v-text="attr('description')"></div>
       </div>
-      <div class="modal-body log-view" v-html="item&&item.log" ref="body"></div>
+      <div class="modal-body log-view" v-html="attr('log')" ref="body"></div>
     </div>
   </div>
 </script>
