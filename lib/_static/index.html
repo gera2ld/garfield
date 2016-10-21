@@ -20,7 +20,7 @@
     <template v-for="(list,index) in lists">
       <div class="divider" v-if="index"></div>
       <h6 class="text-uppercase" v-text="list.key"></h6>
-      <div class="columns col-multiline">
+      <div class="columns col-multiline" :class="'jobs-'+list.key">
         <div class="column col-4 col-sm-6 col-xs-12" v-for="item in list.items" :key="item.id">
           <div class="card">
             <div class="card-header state-text">

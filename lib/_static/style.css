@@ -29,3 +29,7 @@ h1 {
 .log-err {
   color: red;
 }
+
+.jobs-done .card:not(:hover) {
+  opacity: .6;
+}
