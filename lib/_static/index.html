@@ -14,7 +14,7 @@
   <script src="./_static/app.js"></script>
 </head>
 <body>
-  <a href="https://github.com/gera2ld/web-commander"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+  <a class="hide-xs" href="https://github.com/gera2ld/web-commander"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
   <div class="text-center">
     <h1 class="inline-block">W<span class="hide-sm">eb </span>C<span class="hide-sm">om</span>m<span class="hide-sm">an</span>d<span class="hide-sm">er</span></h1>
     <div class="inline-block">&copy; 2016 <a href="https://gerald.top">Gerald</a></div>
@@ -53,12 +53,12 @@
 <script id="tpl-modal" type="x-template">
   <div class="modal">
     <div class="modal-overlay" @click="close"></div>
-    <div class="modal-container">
+    <div class="modal-container log-view">
       <div class="modal-header">
         <div class="float-right state-text" :class="stateClass" v-text="attr('state')"></div>
         <div class="modal-title" v-text="attr('description')"></div>
       </div>
-      <div class="modal-body log-view" v-html="attr('log')" ref="body"></div>
+      <div class="modal-body" v-html="attr('log')" ref="body"></div>
     </div>
   </div>
 </script>

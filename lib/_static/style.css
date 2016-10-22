@@ -18,9 +18,15 @@
 }
 
 .log-view {
+  width: 90%;
+  max-width: 64rem;
+}
+.log-view > .modal-body {
   height: 100vh;
   overflow: auto;
   background: #eee;
+  font-family: monospace;
+  white-space: pre;
 }
 .log-err {
   color: red;
