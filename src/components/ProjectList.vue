@@ -1,7 +1,7 @@
 <template>
   <div class="project-list columns">
     <div class="column col-4 flex flex-col">
-      <div class="project-ctrl mt-10 mb-10">
+      <div class="project-ctrl mb-10">
         <button class="btn btn-primary">+ Project</button>
         <div class="inline-block">
           <div class="input-group">
@@ -20,24 +20,22 @@
         </div>
       </div>
     </div>
-    <div class="column col-8 project-content flex flex-col">
-      <div class="flex-auto flex flex-col" v-if="current.project">
-        <div class="columns">
-          <div class="column col-2">
-            <h4 class="hand project-title" v-if="!editing" v-text="current.data.name" @click="edit"></h4>
-            <input class="form-input" v-if="editing" type="text" v-model="current.data.name" placeholder="Name">
-          </div>
-          <div class="column col-6">
-            <div class="hand" v-if="!editing" v-text="current.data.desc" @click="edit"></div>
-            <input class="form-input" v-if="editing" type="text" v-model="current.data.desc" placeholder="Description">
-          </div>
-          <div class="column col-4 text-right" v-show="editing">
-            <button class="btn btn-primary" @click="save">Save</button>
-            <button class="btn" @click="cancel">Cancel</button>
-          </div>
+    <div class="column col-8 project-content flex flex-col" v-if="current.project">
+      <div class="columns">
+        <div class="column col-2">
+          <h4 class="hand project-title" v-if="!editing" v-text="current.data.name" @click="edit"></h4>
+          <input class="form-input" v-if="editing" type="text" v-model="current.data.name" placeholder="Name">
         </div>
-        <command-list class="flex-auto" :project="current.project"></command-list>
+        <div class="column col-6">
+          <div class="hand" v-if="!editing" v-text="current.data.desc" @click="edit"></div>
+          <input class="form-input" v-if="editing" type="text" v-model="current.data.desc" placeholder="Description">
+        </div>
+        <div class="column col-4 text-right" v-show="editing">
+          <button class="btn btn-primary" @click="save">Save</button>
+          <button class="btn" @click="cancel">Cancel</button>
+        </div>
       </div>
+      <command-list class="flex-auto" :project="current.project"></command-list>
     </div>
   </div>
 </template>
@@ -100,9 +98,6 @@ export default {
 </script>
 
 <style>
-.project-list {
-  height: 100vh;
-}
 .project-item.active {
   border: 1px solid #27ae60;
 }

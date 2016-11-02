@@ -1,6 +1,12 @@
 <template>
-  <div id="app" class="container grid-960">
-    <project-list></project-list>
+  <div id="app" class="container grid-960 flex flex-col">
+    <header>
+      <div class="float-right">
+        &copy; <a href="https://gerald.top">Gerald</a> 2016
+      </div>
+      <strong>Web Commander</strong> &gt; Projects
+    </header>
+    <project-list class="flex-auto"></project-list>
   </div>
 </template>
 
@@ -20,5 +26,17 @@ export default {
 }
 .flex-auto {
   flex: auto;
+}
+
+#app {
+  height: 100vh;
+}
+
+header {
+  padding: 1rem 0;
+}
+
+header > strong {
+  font-size: 2rem;
 }
 </style>
