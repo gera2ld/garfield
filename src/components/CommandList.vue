@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="flex-auto">
-      <div class="card command-item" v-for="command in commands">
+      <div class="card command-item mb-5" v-for="command in commands">
         <div class="card-header">
           <h4 class="card-title" v-text="command.desc"></h4>
           <div class="command-buttons float-right">
@@ -24,22 +24,22 @@
           </div>
         </div>
         <div class="card-body">
-          <div>Type: <em v-text="command.type"></em></div>
+          <div>Type: <em v-text="typeNames[command.type]"></em></div>
           <div>Data: <em v-text="command.data"></em></div>
         </div>
       </div>
     </div>
     <modal title="Command details" v-if="editing" @overlayclick="onCancel">
       <div class="form-group">
+        <label class="form-label">Type:</label>
+        <select class="form-select" :value="editing.type" disabled>
+          <option v-for="type in types" :value="type.value" v-text="type.title"></option>
+        </select>
+      </div>
+      <div class="form-group">
         <label class="form-label">Description:</label>
         <input class="form-input" v-model="editing.desc">
       </div>
-      <!--
-      <div class="form-group">
-        <label class="form-label">Type:</label>
-        <input class="form-input" v-model="editing.type">
-      </div>
-      -->
       <div class="form-group">
         <label class="form-label">Data:</label>
         <input class="form-input" v-model="editing.data">
@@ -65,6 +65,10 @@ const types = [
   {title: 'GitHook', value: 'githook'},
   {title: 'Simple', value: 'simple'},
 ];
+const typeNames = types.reduce((map, item) => {
+  map[item.value] = item.title;
+  return map;
+}, {});
 
 export default {
   props: ['project'],
@@ -75,13 +79,14 @@ export default {
   data() {
     return {
       types,
+      typeNames,
       editing: null,
       commands: [],
     };
   },
   created() {
     this.codeOptions = {
-      mode: 'bash',
+      mode: 'shell',
       lineWrapping: true,
     };
     this.load();
@@ -94,6 +99,7 @@ export default {
       });
     },
     addCommand(type) {
+      this.onEdit({type: type.value});
     },
     switchCommand(command) {
       Commands.put(command.id, {enabled: command.enabled})
@@ -119,10 +125,16 @@ export default {
     },
     onOK() {
       const {id} = this.editing;
-      Commands.put(id, this.editing)
+      (id
+        ? Commands.put(id, this.editing)
+        : Projects.Commands.fill({id: this.project.id}).post(null, this.editing))
       .then(data => {
         const i = this.commands.findIndex(item => item.id === id);
-        ~i && Vue.set(this.commands, i, Object.assign(this.commands[i], data));
+        if (~i) {
+          Vue.set(this.commands, i, Object.assign(this.commands[i], data));
+        } else {
+          this.commands.push(data);
+        }
         this.onCancel();
       }, err => {
         console.error(err);
