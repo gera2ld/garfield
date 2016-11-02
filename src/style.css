@@ -1,0 +1,15 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  display: none;
+  min-width: 100%;
+  margin-top: .5rem;
+}
+
+.open .dropdown-menu {
+  display: block;
+}

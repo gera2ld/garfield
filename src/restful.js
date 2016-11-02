@@ -25,3 +25,5 @@ restful.posthandlers.push(data => {
 
 export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
+
+export const Commands = restful.model('commands');

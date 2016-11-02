@@ -41,6 +41,7 @@
     "html-webpack-plugin": "^2.8.1",
     "http-proxy-middleware": "^0.17.2",
     "restful-fetch": "^0.5.1",
+    "vue-code": "^1.1.0",
     "vue-loader": "^9.4.0",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.8.3",
