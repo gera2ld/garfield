@@ -13,3 +13,14 @@
 .open .dropdown-menu {
   display: block;
 }
+
+.flex-col {
+  flex-direction: column;
+}
+.flex-auto {
+  flex: auto;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}

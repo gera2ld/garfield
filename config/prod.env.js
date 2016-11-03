@@ -1,3 +1,6 @@
+const fs = require('fs');
+
 module.exports = {
-  NODE_ENV: '"production"'
+  NODE_ENV: '"production"',
+  FAVICON: JSON.stringify('data:image/x-icon;base64,' + fs.readFileSync('static/favicon.ico').toString('base64')),
 }

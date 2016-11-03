@@ -27,3 +27,5 @@ export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
 
 export const Commands = restful.model('commands');
+
+export const Tasks = restful.model('tasks');
