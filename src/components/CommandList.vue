@@ -1,6 +1,6 @@
 <template>
   <div class="command-list flex flex-col">
-    <div class="command-ctrl mt-10 mb-10">
+    <div class="command-ctrl mb-10">
       <div v-dropdown>
         <button class="btn btn-primary" dropdown-toggle>+ Command</button>
         <ul class="menu dropdown-menu">
@@ -9,6 +9,10 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="toast mb-10">
+      <div class="project-title" v-text="project.name"></div>
+      <p v-text="project.desc"></p>
     </div>
     <div class="flex-auto">
       <div class="card command-item mb-5" v-for="command in commands">
@@ -19,8 +23,8 @@
               <input type="checkbox" v-model="command.enabled" @change="switchCommand(command)">
               <i class="form-icon"></i>
             </label>
-            <button class="btn btn-primary" @click="onEdit(command)">Edit</button>
-            <button class="btn" @click="onRemove(command)">Delete</button>
+            <button class="btn" @click="onEdit(command)"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-danger" @click="onRemove(command)"><i class="fa fa-trash"></i></button>
           </div>
         </div>
         <div class="card-body">
@@ -121,7 +125,8 @@ export default {
       }, {});
     },
     onRemove(command) {
-      Commands.remove(command.id)
+      confirm('Are you sure to remove command:\n' + command.desc)
+      && Commands.remove(command.id)
       .then(() => {
         const i = this.commands.indexOf(command);
         ~i && this.commands.splice(i, 1);
@@ -156,3 +161,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.project-title {
+  font-size: 2rem;
+}
+</style>
