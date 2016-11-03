@@ -7,7 +7,7 @@ const restful = new Restful({
 
 export default restful;
 restful.posthandlers.push(data => {
-  if (data.rows) {
+  if (data && data.rows) {
     let rows = [];
     const meta = Object.keys(data).reduce((meta, key) => {
       if (key === 'rows') {

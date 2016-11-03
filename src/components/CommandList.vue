@@ -20,7 +20,7 @@
               <i class="form-icon"></i>
             </label>
             <button class="btn btn-primary" @click="onEdit(command)">Edit</button>
-            <button class="btn">Delete</button>
+            <button class="btn" @click="onRemove(command)">Delete</button>
           </div>
         </div>
         <div class="card-body">
@@ -119,6 +119,13 @@ export default {
         res[key] = command[key];
         return res;
       }, {});
+    },
+    onRemove(command) {
+      Commands.remove(command.id)
+      .then(() => {
+        const i = this.commands.indexOf(command);
+        ~i && this.commands.splice(i, 1);
+      });
     },
     onUpdateCode(script) {
       this.editing.script = script;
