@@ -1,7 +1,8 @@
 <template>
   <div class="task-list">
     <div v-if="!tasks.length">
-      <div class="empty">
+      <div class="loading" v-if="loading"></div>
+      <div class="empty" v-if="!loading">
         <p class="empty-title">No task is found~</p>
       </div>
     </div>
@@ -25,6 +26,7 @@ import {formatTime, formatDuration} from '../utils/time';
 export default {
   data() {
     return {
+      loading: true,
       tasks: [],
     };
   },
@@ -34,6 +36,7 @@ export default {
       tasks.forEach(task => {
         task.desc = task.command && task.command.desc;
       });
+      this.loading = false;
       this.tasks = tasks;
     });
   },
