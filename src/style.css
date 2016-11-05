@@ -19,6 +19,7 @@
 }
 .flex-auto {
   flex: auto;
+  overflow: auto;
 }
 
 .text-nowrap {
