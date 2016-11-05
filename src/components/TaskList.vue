@@ -12,8 +12,11 @@
           [<span class="text-muted" v-text="task.id"></span>]
         </div>
         <div class="column col-4" v-text="task.desc"></div>
-        <div class="column col-1" v-text="task.status"></div>
+        <div class="column col-1" v-text="task.status" :class="'task-status-'+task.status"></div>
         <div class="column col-2 tooltip text-nowrap" v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
+        <div class="column col-1">
+          <button class="btn btn-sm text-uppercase">Log</button>
+        </div>
       </div>
     </div>
   </div>
@@ -21,7 +24,7 @@
 
 <script>
 import {Tasks} from '../restful';
-import {formatTime, formatDuration} from '../utils/time';
+import {timeAgo, formatTime, formatDuration} from '../utils/time';
 
 export default {
   data() {
@@ -42,7 +45,7 @@ export default {
   },
   methods: {
     timestamps(item) {
-      return `${formatTime(item.startedAt)} - ${formatTime(item.endedAt)}`;
+      return timeAgo(item.endedAt) || `${formatTime(item.startedAt)} - ${formatTime(item.endedAt)}`;
     },
     duration(item) {
       if (!item.startedAt) return '';
@@ -53,3 +56,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.task-status-error {
+  color: red;
+}
+.task-status-finished {
+  color: gray;
+}
+</style>

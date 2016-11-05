@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node lib",
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "test": "mocha test"
   },
   "keywords": [
     "web",
@@ -40,6 +41,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.8.1",
     "http-proxy-middleware": "^0.17.2",
+    "mocha": "^3.1.2",
     "ora": "^0.3.0",
     "restful-fetch": "^0.5.1",
     "shelljs": "^0.7.5",

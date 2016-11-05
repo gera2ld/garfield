@@ -3,7 +3,15 @@ function lpad(str, len, pad = '0') {
   return pad.repeat(Math.max(0, len - str.length)) + str;
 }
 
-export function formatTime(str) {
+function timeAgo(time, minDelta = 24 * 60 * 60 * 1000) {
+  if (!time) return;
+  const delta = Date.now() - new Date(time).getTime();
+  if (delta < minDelta) return;
+  return exports.formatDuration(delta) + ' ago';
+}
+exports.timeAgo = timeAgo;
+
+function formatTime(str) {
   if (!str) return '?';
   const date = new Date(str);
   const h = lpad(date.getHours(), 2);
@@ -11,36 +19,42 @@ export function formatTime(str) {
   const s = lpad(date.getSeconds(), 2);
   return `${h}:${m}:${s}`;
 }
+exports.formatTime = formatTime;
 
-export function formatDuration(ms) {
-  const data = [{
-    unit: 'ms',
+{
+  const units = [{
     step: 1000,
+    title: '{}ms',
   }, {
-    unit: 's',
     step: 60,
+    title: '{}s',
   }, {
-    unit: 'min',
     step: 60,
+    title: '{}min',
   }, {
-    unit: 'h',
     step: 24,
+    title: '{}h',
   }, {
-    unit: 'd',
+    step: 30,
+    title: '{}d',
+  }, {
+    step: 12,
+    title: '{}mon',
+  }, {
+    step: 10,
+    title: '{}yr',
+  }, {
+    title: 'long time',
   }];
-  var last = 0;
-  for (var t = ms, i = 0; t && i < data.length; i ++) {
-    const item = data[last = i];
-    if (item.step) {
-      item.value = t % item.step;
-      t = ~~ (t / item.step);
-    } else {
-      item.value = t;
-      break;
+  function formatDuration(time, maxUnits=2) {
+    const results = [];
+    for (let i = 0; time && i < units.length; i ++) {
+      const unit = units[i];
+      const value = unit.step ? time % unit.step : ~~ time;
+      results.push(value ? unit.title.replace('{}', value) : '');
+      time = unit.step ? ~~ (time / unit.step) : 0;
     }
+    return results.slice(-maxUnits).reverse().filter(i => i).join(' ') || '0s';
   }
-  return [data[last], data[last - 1]]
-  .map(item => item && item.value && (item.value + item.unit))
-  .filter(part => part)
-  .join(' ');
+  exports.formatDuration = formatDuration;
 }
