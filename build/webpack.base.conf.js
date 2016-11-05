@@ -20,6 +20,7 @@ module.exports = {
       'src': path.resolve('src'),
       'assets': path.resolve('src/assets'),
       'components': path.resolve('src/components'),
+      'lib': path.resolve('lib'),
     }
   },
   resolveLoader: {

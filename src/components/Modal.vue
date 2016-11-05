@@ -3,6 +3,7 @@
     <div class="modal-overlay" @click="onOverlayClick"></div>
     <div class="modal-container">
       <div class="modal-header">
+        <slot name="header"></slot>
         <div class="modal-title" v-text="title"></div>
       </div>
       <div class="modal-body">
