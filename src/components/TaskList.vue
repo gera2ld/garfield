@@ -1,13 +1,22 @@
 <template>
-  <div class="task-list">
-    <div v-if="!tasks.length">
-      <div class="loading" v-if="loading"></div>
-      <div class="empty" v-if="!loading">
+  <div class="task-list flex flex-col">
+    <div>
+      <ul class="tab tab-block">
+        <li class="tab-item" :class="{active:tasks.key==='queued'}">
+          <a href="#" @click.prevent="switchTo('queued')">Queued</a>
+        </li>
+        <li class="tab-item" :class="{active:tasks.key==='ended'}">
+          <a href="#" @click.prevent="switchTo('ended')">Ended</a>
+        </li>
+      </ul>
+    </div>
+    <div v-if="!selected.length">
+      <div class="empty">
         <p class="empty-title">No task is found~</p>
       </div>
     </div>
-    <div v-if="tasks.length">
-      <div class="task-item columns" v-for="task in tasks">
+    <div class="flex-auto" v-if="selected.length">
+      <div class="task-item columns" v-for="task in selected">
         <div class="column col-1">
           [<span class="text-muted" v-text="task.id"></span>]
         </div>
@@ -19,22 +28,24 @@
         </div>
       </div>
     </div>
-    <modal class="task-detail" title="Task details" v-if="current" @overlayclick="onClose">
+    <modal class="task-detail" title="Task details" v-if="tasks.current" @overlayclick="onClose">
       <div class="clearfix mb-10">
         <div class="float-right">
-          Status: <span :class="'task-status-'+current.status" v-text="current.status"></span>
+          Status: <span :class="'task-status-'+tasks.current.status" v-text="tasks.current.status"></span>
         </div>
-        [<span v-text="current.id"></span>] <span v-text="current.desc"></span>
+        [<span v-text="tasks.current.id"></span>] <span v-text="tasks.current.desc"></span>
       </div>
-      <div class="task-log flex-auto" v-html="current.logData"></div>
+      <div class="task-log flex-auto" v-html="tasks.current.logData"></div>
     </modal>
   </div>
 </template>
 
 <script>
 import Logs from 'lib/logs';
-import {Tasks} from '../restful';
-import {time, safeHTML} from '../utils';
+import store from 'src/services/store';
+import {emit} from 'src/services/tasks';
+import {Tasks} from 'src/services/restful';
+import {time} from '../utils';
 import Modal from './Modal';
 
 export default {
@@ -43,20 +54,21 @@ export default {
   },
   data() {
     return {
-      loading: true,
-      tasks: [],
-      current: null,
+      store,
+      tasks: {
+        key: null,
+        current: null,
+      },
     };
   },
+  computed: {
+    selected() {
+      return this.store[this.tasks.key] || [];
+    },
+  },
   created() {
-    Tasks.get()
-    .then(tasks => {
-      tasks.forEach(task => {
-        task.desc = task.command && task.command.desc;
-      });
-      this.loading = false;
-      this.tasks = tasks;
-    });
+    this.switchTo('queued');
+    this.loadQueuedTasks();
   },
   methods: {
     timestamps(item) {
@@ -68,22 +80,29 @@ export default {
         ? time.formatDuration(new Date(item.endedAt).getTime() - new Date(item.startedAt).getTime())
         : `Since ${time.formatTime(item.startedAt)}`;
     },
-    formatLogs(data) {
-      const {offset=0, meta, buffer} = data;
-      return meta.map(item => {
-        const start = Math.max(0, item.start - offset);
-        const end = Math.max(0, item.end - offset);
-        const chunk = safeHTML(buffer.slice(start, end)).replace(/\n/g, '<br>');
-        return chunk && `<span class="log-${safeHTML(item.type)}">${chunk}</span>`;
-      }).join('');
-    },
     showDetails(item) {
-      this.logs = new Logs(item.log && JSON.parse(item.log) || {});
-      item.logData = this.formatLogs(this.logs.getValue());
-      this.current = item;
+      !item.logs && emit('readLog', item.id);
+      this.tasks.current = item;
     },
     onClose() {
-      this.current = null;
+      this.tasks.current = null;
+    },
+    loadQueuedTasks() {
+      // load queued tasks via websocket
+    },
+    loadEndedTasks() {
+      // load ended tasks via REST
+      Tasks.get()
+      .then(tasks => {
+        tasks.forEach(task => {
+          task.desc = task.command && task.command.desc;
+        });
+        this.store.ended = tasks;
+      });
+    },
+    switchTo(key) {
+      this.tasks.key = key;
+      key === 'ended' && this.loadEndedTasks();
     },
   },
 };

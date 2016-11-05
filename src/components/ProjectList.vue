@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import {Projects} from '../restful';
+import {Projects} from '../services/restful';
 import CommandList from './CommandList';
 import Modal from './Modal';
 

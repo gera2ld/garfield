@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {Projects, Commands} from '../restful';
+import {Projects, Commands} from '../services/restful';
 import Modal from './Modal';
 import 'codemirror';
 import 'codemirror/lib/codemirror.css';
