@@ -1,8 +1,11 @@
 <template>
   <div id="app" class="container grid-960 flex flex-col">
     <header>
-      <div class="float-right">
-        &copy; <a href="https://gerald.top">Gerald</a> 2016
+      <div class="float-right navbar-copy">
+        <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-style="mega" data-count-href="/gera2ld/web-commander/stargazers" data-count-api="/repos/gera2ld/web-commander#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
+        <div class="inline-block">
+          &copy; <a href="https://gerald.top">Gerald</a> 2016
+        </div>
       </div>
       <strong>Web Commander</strong> &gt;
       <nav class="navbar inline-block">
@@ -44,6 +47,11 @@ export default {
     window.addEventListener('hashchange', this.onUpdate);
     this.onUpdate();
   },
+  mounted() {
+    const s = document.createElement('script');
+    s.src = 'https://buttons.github.io/buttons.js';
+    document.body.appendChild(s);
+  },
   beforeDestroy() {
     window.removeEventListener('hashchange', this.onUpdate);
   },
@@ -75,5 +83,13 @@ header > strong {
 .navbar > a.active,
 .navbar > a:hover {
   color: #5764c6;
+}
+
+.navbar-copy {
+  line-height: 2rem;
+}
+
+.navbar-copy > * {
+  vertical-align: middle;
 }
 </style>
