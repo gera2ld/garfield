@@ -20,11 +20,12 @@
         <div class="column col-1">
           [<span class="text-muted" v-text="task.id"></span>]
         </div>
-        <div class="column col-4" v-text="task.desc"></div>
+        <div class="column col-6" v-text="getDesc(task)"></div>
         <div class="column col-1" v-text="task.status" :class="'task-status-'+task.status"></div>
-        <div class="column col-2 tooltip text-nowrap" v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
-        <div class="column col-1">
-          <button class="btn btn-sm text-uppercase" @click="showDetails(task)">Log</button>
+        <div class="column col-2 tooltip tooltip-left text-nowrap" v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
+        <div class="column col-2 text-right">
+          <button class="btn btn-sm text-uppercase" @click="onShowDetails(task)">Log</button>
+          <button class="btn btn-sm" v-if="tasks.key==='ended'" @click="onRemove(task)"><i class="fa fa-trash"></i></button>
         </div>
       </div>
     </div>
@@ -33,7 +34,7 @@
         <div class="float-right">
           Status: <span :class="'task-status-'+tasks.current.status" v-text="tasks.current.status"></span>
         </div>
-        [<span v-text="tasks.current.id"></span>] <span v-text="tasks.current.desc"></span>
+        [<span v-text="tasks.current.id"></span>] <span v-text="getDesc(tasks.current)"></span>
       </div>
       <div class="task-log flex-auto" v-html="tasks.current.logData"></div>
     </modal>
@@ -43,7 +44,7 @@
 <script>
 import Logs from 'lib/logs';
 import store from 'src/services/store';
-import {emit} from 'src/services/tasks';
+import {emit, loadEnded} from 'src/services/tasks';
 import {Tasks} from 'src/services/restful';
 import {time} from '../utils';
 import Modal from './Modal';
@@ -68,7 +69,6 @@ export default {
   },
   created() {
     this.switchTo('queued');
-    this.loadQueuedTasks();
   },
   methods: {
     timestamps(item) {
@@ -80,29 +80,30 @@ export default {
         ? time.formatDuration(new Date(item.endedAt).getTime() - new Date(item.startedAt).getTime())
         : `Since ${time.formatTime(item.startedAt)}`;
     },
-    showDetails(item) {
+    onShowDetails(item) {
       !item.logs && emit('readLog', item.id);
       this.tasks.current = item;
     },
     onClose() {
       this.tasks.current = null;
     },
-    loadQueuedTasks() {
-      // load queued tasks via websocket
+    onRemove(task) {
+      Tasks.remove(task.id)
+      .then(() => {
+        const i = store.ended.indexOf(task);
+        ~i && store.ended.splice(i, 1);
+      });
     },
     loadEndedTasks() {
       // load ended tasks via REST
-      Tasks.get()
-      .then(tasks => {
-        tasks.forEach(task => {
-          task.desc = task.command && task.command.desc;
-        });
-        this.store.ended = tasks;
-      });
+      loadEnded();
     },
     switchTo(key) {
       this.tasks.key = key;
       key === 'ended' && this.loadEndedTasks();
+    },
+    getDesc(task) {
+      return task && task.command && task.command.desc;
     },
   },
 };
@@ -127,5 +128,12 @@ export default {
 }
 .task-detail .modal-footer {
   display: none;
+}
+.task-item {
+  margin-left: 0;
+  margin-right: 0;
+}
+.task-item:hover {
+  background: #eee;
 }
 </style>
