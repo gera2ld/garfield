@@ -30,6 +30,7 @@
         <div class="card-body">
           <div>Type: <em v-text="typeNames[command.type]"></em></div>
           <div>Data: <em v-text="command.data"></em></div>
+          <div>URL: <em>POST</em> <span v-text="getURL(command)"></span></div>
         </div>
       </div>
     </div>
@@ -154,6 +155,11 @@ export default {
     },
     onCancel() {
       this.editing = null;
+    },
+    getURL(command) {
+      const a = document.createElement('a');
+      a.setAttribute('href', `cmd/${this.project.name}/${command.type}`);
+      return a.href;
     },
   },
   watch: {
