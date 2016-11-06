@@ -7,6 +7,7 @@ ENV NPM npm
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 EXPOSE 2333
+VOLUME $WORKDIR/data
 
 COPY . $WORKDIR
 RUN $NPM i && npm run build && NODE_ENV=production $NPM prune
