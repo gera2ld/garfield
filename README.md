@@ -15,84 +15,20 @@ $ npm i web-commander -g
 
 Usage
 ---
-1. Create a `commands.js` file (`.json` should work too) like this:
-
-   ``` js
-   module.exports = {
-     greet: {
-       command: 'echo "Hello world"',
-     },
-   };
-   ```
-
 1. Start web-commander at `0.0.0.0:2333`:
 
    ``` sh
-   $ web-commander -p 2333 -c ./path/to/commands.js
+   # Default address is `0.0.0.0:2333`
+   $ web-commander
+
+   # Host and port may be overridden by environment variables
+   $ HOST=localhost PORT=8888 web-commander
    ```
+
+1. Open dashboard by the address specified above, then add projects and commands.
 
 1. Make a request to web-commander:
 
    ```
-   GET http://server.address:2333/greet
+   POST http://server.address/cmd/command_name/command_type
    ```
-
-   Then the command for `greet` will be executed.
-
-Document
----
-
-* Commands defined in `commands.js`
-
-  Exports an object for commands. Each key as the name of command, and value as the command options.
-  The value may have properties below:
-
-  * methods
-
-    `null` for unlimited. Array of methods (`GET`, `POST`, etc.) for allowed methods.
-
-  * predicate
-
-    Function called with two parameters: `payload` and `method`.
-    If returned value is falsy, the command will not be executed.
-    Otherwise, the returned value will override the pre-defined properties of this command.
-
-  * description
-
-    String, description of this command.
-
-  * command
-
-    String, space-separated arguments.
-
-  * jobKey
-
-    A key of the running command, used to mark the processes doing the same thing.
-
-  * cwd
-
-    Same as that in `child_process.exec`.
-
-  * env
-
-    Same as that in `child_process.exec`.
-
-  * timeout
-
-    Same as that in `child_process.exec`.
-
-* `web-commander`
-
-  ```
-  usage: web-commander [-h] [-v] [-H HOST] [-p PORT] [-c COMMANDS]
-
-  Start a web command server.
-
-  Optional arguments:
-    -h, --help            Show this help message and exit.
-    -v, --version         Show program's version number and exit.
-    -H HOST, --host HOST  The server will bind to HOST, default as `0.0.0.0`.
-    -p PORT, --port PORT  The server will listen on PORT, default as 2333.
-    -c COMMANDS, --commands COMMANDS
-                          Commands will be imported from COMMANDS file.
-  ```
