@@ -83,7 +83,11 @@ export default {
       }, {});
     },
     onRemove(project) {
-      alert('不样删除！');
+      Projects.remove(project.id).then(() => {
+        const i = this.projects.indexOf(project);
+        ~i && this.projects.splice(i, 1);
+        if (this.current === project) this.current = null;
+      });
     },
     pick(project) {
       this.current = project;
