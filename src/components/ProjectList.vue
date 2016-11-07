@@ -3,11 +3,11 @@
     <div class="column col-4 flex flex-col">
       <div class="project-ctrl mb-10">
         <button class="btn btn-primary" @click="addProject">+ Project</button>
-        <div class="inline-block">
-          <div class="input-group">
-            <input type="search" class="form-input" v-model="search">
-            <button class="btn input-group-btn" @click="clearSearch">&#xd7;</button>
-          </div>
+      </div>
+      <div class="project-ctrl mb-10">
+        <div class="input-group">
+          <input type="search" class="form-input" v-model="search">
+          <button class="btn input-group-btn" @click="clearSearch">&#xd7;</button>
         </div>
       </div>
       <div class="flex-auto">
