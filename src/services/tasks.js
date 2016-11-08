@@ -1,4 +1,4 @@
-import Logs from 'lib/logs';
+import Logs from 'lib/utils/logs';
 import {formatLogs} from 'src/utils';
 import store from './store';
 import {Tasks} from './restful';

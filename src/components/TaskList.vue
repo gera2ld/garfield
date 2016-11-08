@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import Logs from 'lib/logs';
 import store from 'src/services/store';
 import {emit, loadEnded} from 'src/services/tasks';
 import {Tasks} from 'src/services/restful';
