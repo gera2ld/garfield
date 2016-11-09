@@ -1,11 +1,11 @@
-build
-config
-src
-static
-test
+/build
+/config
+/src
+/static
+/test
 .babelrc
 .env
 *.lock
 
-data/*
+/data/*
 !.gitkeep
