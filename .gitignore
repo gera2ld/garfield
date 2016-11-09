@@ -1,6 +1,8 @@
 node_modules
 /dist
-/data
 *.log
 *.lock
 *.sqlite3
+
+/data/*
+!.gitkeep

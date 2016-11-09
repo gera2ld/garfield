@@ -1,0 +1,11 @@
+build
+config
+src
+static
+test
+.babelrc
+.env
+*.lock
+
+data/*
+!.gitkeep
