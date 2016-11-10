@@ -36,7 +36,7 @@
         </div>
         [<span v-text="tasks.current.id"></span>] <span v-text="getDesc(tasks.current)"></span>
       </div>
-      <div class="task-log flex-auto" v-html="tasks.current.logData"></div>
+      <div class="task-log flex-auto" v-html="tasks.current.logData" ref="logBox"></div>
     </modal>
   </div>
 </template>
@@ -60,6 +60,14 @@ export default {
         current: null,
       },
     };
+  },
+  watch: {
+    ['tasks.current.logData']() {
+      this.$nextTick(() => {
+        const {logBox} = this.$refs;
+        if (logBox) logBox.scrollTop = logBox.scrollHeight;
+      });
+    },
   },
   computed: {
     selected() {
@@ -119,6 +127,9 @@ export default {
   height: 60vh;
   padding: 10px;
   background: #eee;
+}
+.task-log .log-err {
+  color: red;
 }
 .task-detail .modal-body {
   max-height: none;

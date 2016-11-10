@@ -24,6 +24,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api/': `http://localhost:${process.env.PORT}`,
+      '/cmd/': `http://localhost:${process.env.PORT}`,
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

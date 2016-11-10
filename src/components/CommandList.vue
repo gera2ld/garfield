@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <modal title="Command details" v-if="editing" @overlayclick="onCancel">
+    <modal class="command-modal" title="Command details" v-if="editing" @overlayclick="onCancel">
       <div class="form-group">
         <label class="form-label">Type:</label>
         <select class="form-select" :value="editing.type" disabled>
@@ -49,7 +49,7 @@
         <label class="form-label">Data:</label>
         <input class="form-input" v-model="editing.data">
       </div>
-      <vue-code class="command-code" :code="editing.script" :options="codeOptions" @changed="onUpdateCode"></vue-code>
+      <vue-code class="command-code flex-auto" :code="editing.script" :options="codeOptions" @changed="onUpdateCode"></vue-code>
       <div slot="footer">
         <button class="btn btn-primary" @click="onOK">OK</button>
         <button class="btn btn-cancel" @click="onCancel">Cancel</button>
@@ -171,5 +171,21 @@ export default {
 <style>
 .project-title {
   font-size: 2rem;
+}
+.command-modal .modal-body {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+  height: 70vh;
+}
+.command-code {
+  position: relative;
+}
+.command-code > .CodeMirror {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
