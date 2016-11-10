@@ -32,3 +32,21 @@ Usage
    ```
    POST http://server.address/cmd/command_name/command_type
    ```
+
+Config
+---
+Default configurations can be overridden by environment variables.
+
+* HOST
+
+  The server host, default as `''`.
+
+* PORT
+
+  The server port, default as `2333`.
+
+* DATA_DIR
+
+  The directory to store data, also as current working directory to start each task. Default as `data`.
+
+  `DATA_DIR` can either be a path relative to current working directory or an absolute path.
