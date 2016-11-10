@@ -83,7 +83,8 @@ export default {
       }, {});
     },
     onRemove(project) {
-      Projects.remove(project.id).then(() => {
+      confirm('Are you sure to remove project:\n' + project.name)
+      && Projects.remove(project.id).then(() => {
         const i = this.projects.indexOf(project);
         ~i && this.projects.splice(i, 1);
         if (this.current === project) this.current = null;
