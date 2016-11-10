@@ -14,6 +14,10 @@
       <div class="project-title" v-text="project.name"></div>
       <p v-text="project.desc"></p>
     </div>
+    <div class="toast mb-10" v-for="message in messages" :class="message.className">
+      <button class="btn btn-clear float-right" @click="message.dismiss"></button>
+      <div v-text="message.text"></div>
+    </div>
     <div class="flex-auto">
       <div class="card command-item mb-5" v-for="command in commands">
         <div class="card-header">
@@ -88,6 +92,7 @@ export default {
       typeNames,
       editing: null,
       commands: [],
+      messages: [],
     };
   },
   created() {
@@ -107,6 +112,18 @@ export default {
     addCommand(type) {
       this.onEdit({type: type.value});
     },
+    addMessage(text, className, delay=3000) {
+      const messages = this.messages;
+      const message = {
+        text, className,
+        dismiss() {
+          const i = messages.indexOf(message);
+          ~i && messages.splice(i, 1);
+        },
+      };
+      this.messages.push(message);
+      setTimeout(message.dismiss, delay);
+    },
     switchCommand(command) {
       Commands.put(command.id, {enabled: command.enabled})
       .catch(err => {
@@ -118,9 +135,9 @@ export default {
       confirm('Are you sure to run command:\n' + command.desc)
       && Commands.model(command.id).post('run')
       .then(() => {
-        console.log('Task created.');
+        this.addMessage('Task created.', 'toast-success');
       }, err => {
-        console.error(err);
+        this.addMessage(err, 'toast-danger');
       });
     },
     onEdit(command) {
