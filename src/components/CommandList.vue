@@ -23,8 +23,9 @@
               <input type="checkbox" v-model="command.enabled" @change="switchCommand(command)">
               <i class="form-icon"></i>
             </label>
-            <button class="btn" @click="onEdit(command)"><i class="fa fa-pencil"></i></button>
-            <button class="btn btn-danger" @click="onRemove(command)"><i class="fa fa-trash"></i></button>
+            <button class="btn tooltip" data-tooltip="Run" @click="onRun(command)"><i class="fa fa-play"></i></button>
+            <button class="btn tooltip" data-tooltip="Edit" @click="onEdit(command)"><i class="fa fa-pencil"></i></button>
+            <button class="btn tooltip" data-tooltip="Remove" @click="onRemove(command)"><i class="fa fa-trash"></i></button>
           </div>
         </div>
         <div class="card-body">
@@ -110,6 +111,15 @@ export default {
       Commands.put(command.id, {enabled: command.enabled})
       .catch(err => {
         command.enabled = !command.enabled;
+        console.error(err);
+      });
+    },
+    onRun(command) {
+      confirm('Are you sure to run command:\n' + command.desc)
+      && Commands.model(command.id).post('run')
+      .then(() => {
+        console.log('Task created.');
+      }, err => {
         console.error(err);
       });
     },
