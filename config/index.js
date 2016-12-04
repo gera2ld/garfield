@@ -1,4 +1,6 @@
-require('dotenv').config({silent: true});
+const config = require('../lib/config');
+const backend = config.get('BACKEND') || `http://localhost:${config.get('PORT')}`;
+
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
@@ -19,12 +21,12 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: process.env.DEV_PORT,
+    port: config.get('DEV_PORT'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/': `http://localhost:${process.env.PORT}`,
-      '/cmd/': `http://localhost:${process.env.PORT}`,
+      '/api/': backend,
+      '/cmd/': backend,
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
