@@ -1,10 +1,11 @@
-const config = require('../lib/config');
-const backend = config.get('BACKEND') || `http://localhost:${config.get('PORT')}`;
+const nconf = require('../lib/config');
+const backend = nconf.get('BACKEND') || `http://localhost:${nconf.get('PORT')}`;
 
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
 module.exports = {
+  nconf,
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
@@ -21,7 +22,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: config.get('DEV_PORT'),
+    port: nconf.get('DEV_PORT'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
