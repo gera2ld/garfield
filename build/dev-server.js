@@ -65,7 +65,7 @@ module.exports = app.listen(port, function (err) {
   console.log('Listening at port ' + port + '\n')
 })
 
-if (!config.nconf.get('BACKEND')) {
+if (config.nconf.get('PORT')) {
   nodemon({
     script: 'lib',
     watch: 'lib',

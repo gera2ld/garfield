@@ -1,15 +1,14 @@
 FROM node
 
 ENV WORKDIR /usr/src/app
-ENV NPM npm --registry=https://registry.npm.taobao.org
-# ENV NPM npm
+RUN npm i --registry=https://registry.npm.taobao.org -g cnpm
 
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 EXPOSE 2333 8080
 
 COPY package.json $WORKDIR
-RUN $NPM i
+RUN cnpm i
 
 VOLUME $WORKDIR $WORKDIR/data $WORKDIR/node_modules
 

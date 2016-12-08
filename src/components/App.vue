@@ -79,6 +79,10 @@ header {
   padding: 1rem 0;
 }
 
+header > * {
+  line-height: 36px;
+}
+
 header > strong {
   font-size: 2rem;
 }
@@ -98,7 +102,7 @@ header > strong {
 }
 
 .navbar-copy {
-  line-height: 2rem;
+  line-height: 36px;
 }
 
 .navbar-copy > * {

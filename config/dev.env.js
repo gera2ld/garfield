@@ -4,5 +4,5 @@ var config = require('../lib/config')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  WEB_SOCKET_ORIGIN: `'http://localhost:${config.get('PORT')}'`,
+  WEB_SOCKET_ORIGIN: JSON.stringify(config.get('BACKEND')),
 })

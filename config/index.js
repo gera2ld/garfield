@@ -1,5 +1,5 @@
 const nconf = require('../lib/config');
-const backend = nconf.get('BACKEND') || `http://localhost:${nconf.get('PORT')}`;
+const backend = nconf.get('BACKEND');
 
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
