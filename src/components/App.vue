@@ -1,11 +1,15 @@
 <template>
   <div id="app" class="container grid-960 flex flex-col">
-    <header>
+    <header v-if="store.me.id">
       <div class="float-right navbar-copy">
         <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-style="mega" data-count-href="/gera2ld/web-commander/stargazers" data-count-api="/repos/gera2ld/web-commander#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
         <div class="inline-block">
           &copy; <a href="https://gerald.top">Gerald</a> 2016
         </div>
+      </div>
+      <div class="float-right navbar-user">
+        <img :src="store.me.avatar">
+        <span v-text="store.me.name"></span>
       </div>
       <strong>Web Commander</strong> &gt;
       <nav class="navbar inline-block">
@@ -13,13 +17,18 @@
         <a href="#projects" :class="{active:componentName==='projects'}">Projects</a>
       </nav>
     </header>
-    <component :is="component" class="flex-auto"></component>
+    <component :is="component" v-if="store.me.id" class="flex-auto"></component>
+    <div class="empty" v-if="!store.me.id">
+      <div class="loading"></div>
+      <p>Authorizing...</p>
+    </div>
   </div>
 </template>
 
 <script>
 import ProjectList from './ProjectList';
 import TaskList from './TaskList';
+import store from '../services/store';
 
 const routes = {
   projects: ProjectList,
@@ -32,6 +41,7 @@ export default {
   },
   data() {
     return {
+      store,
       componentName: null,
       component: null,
     };

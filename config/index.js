@@ -26,6 +26,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/account/': backend,
       '/api/': backend,
       '/cmd/': backend,
     },

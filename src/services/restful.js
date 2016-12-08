@@ -3,6 +3,9 @@ import Restful from 'restful-fetch';
 const restful = new Restful({
   root: '/api',
   presets: ['json'],
+  config: {
+    credentials: 'same-origin',
+  },
 });
 
 export default restful;
@@ -22,6 +25,14 @@ restful.posthandlers.push(data => {
   }
   return data;
 });
+restful.errhandlers.unshift(res => res && res.json && res.json().then(data => ({
+  status: res.status,
+  data,
+})), res => {
+  if (res && res.data && res.data.message === 'Not Authorized') {
+    location.href = '/account/login';
+  }
+});
 
 export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
@@ -29,3 +40,5 @@ Projects.Commands = Projects.model(':id', 'commands');
 export const Commands = restful.model('commands');
 
 export const Tasks = restful.model('tasks');
+
+export const Me = restful.model('me');

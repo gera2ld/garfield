@@ -25,3 +25,13 @@
 .text-nowrap {
   white-space: nowrap;
 }
+
+.navbar-user {
+  margin-right: 2em;
+}
+.navbar-user > * {
+  vertical-align: middle;
+}
+.navbar-user > img {
+  height: 36px;
+}
