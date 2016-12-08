@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container grid-960 flex flex-col">
-    <header v-if="store.me.id">
+    <header>
       <div class="float-right navbar-copy">
         <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-style="mega" data-count-href="/gera2ld/web-commander/stargazers" data-count-api="/repos/gera2ld/web-commander#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
         <div class="inline-block">
@@ -11,16 +11,18 @@
         <img :src="store.me.avatar">
         <span v-text="store.me.name"></span>
       </div>
-      <strong>Web Commander</strong> &gt;
-      <nav class="navbar inline-block">
+      <strong>Web Commander</strong>
+      <nav class="navbar inline-block" v-if="store.me.permission > 0">
+        &gt;
         <a href="#" :class="{active:componentName==='tasks'}">Tasks</a>
         <a href="#projects" :class="{active:componentName==='projects'}">Projects</a>
       </nav>
     </header>
-    <component :is="component" v-if="store.me.id" class="flex-auto"></component>
-    <div class="empty" v-if="!store.me.id">
-      <div class="loading"></div>
-      <p>Authorizing...</p>
+    <component :is="component" v-if="store.me.permission > 0" class="flex-auto"></component>
+    <div class="empty" v-if="!(store.me.permission > 0)">
+      <div class="loading" v-if="!store.me.id"></div>
+      <p v-if="!store.me.id">Authorizing...</p>
+      <p v-if="!(store.me.permission > 0)">Oops, permission denied!</p>
     </div>
   </div>
 </template>
