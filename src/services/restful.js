@@ -1,7 +1,7 @@
 import Restful from 'restful-fetch';
 
 const restful = new Restful({
-  root: '/api',
+  root: './api',
   presets: ['json'],
   config: {
     credentials: 'same-origin',
@@ -30,7 +30,7 @@ restful.errhandlers.unshift(res => res && res.json && res.json().then(data => ({
   data,
 })), res => {
   if (res && res.data && res.data.message === 'Not Authorized') {
-    location.href = '/account/login';
+    location.href = './account/login';
   }
 });
 
