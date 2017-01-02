@@ -67,7 +67,7 @@ module.exports = app.listen(port, function (err) {
 
 if (config.nconf.get('PORT')) {
   nodemon({
-    script: 'lib',
+    script: 'lib/server',
     watch: 'lib',
   })
   process.once('SIGINT', () => {

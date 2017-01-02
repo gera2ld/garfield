@@ -12,17 +12,17 @@
         <span v-text="store.me.name"></span>
       </div>
       <strong>Web Commander</strong>
-      <nav class="navbar inline-block" v-if="store.me.permission > 0">
+      <nav class="navbar inline-block" v-if="permitProject">
         &gt;
         <a href="#" :class="{active:componentName==='tasks'}">Tasks</a>
         <a href="#projects" :class="{active:componentName==='projects'}">Projects</a>
       </nav>
     </header>
-    <component :is="component" v-if="store.me.permission > 0" class="flex-auto"></component>
-    <div class="empty" v-if="!(store.me.permission > 0)">
+    <component :is="component" v-if="permitProject" class="flex-auto"></component>
+    <div class="empty" v-if="!permitProject">
       <div class="loading" v-if="!store.me.id"></div>
       <p v-if="!store.me.id">Authorizing...</p>
-      <p v-if="!(store.me.permission > 0)">Oops, permission denied!</p>
+      <p v-if="!permitProject">Oops, permission denied!</p>
     </div>
   </div>
 </template>
@@ -47,6 +47,19 @@ export default {
       componentName: null,
       component: null,
     };
+  },
+  computed: {
+    permitProject() {
+      return this.hasPermission('project', 'show');
+    },
+  },
+  methods: {
+    hasPermission(key, action) {
+      const permission = this.store.me.permission || {};
+      const actions = permission[key] || [];
+      console.log(key, action, actions.includes(action));
+      return actions.includes(action);
+    },
   },
   created() {
     this.onUpdate = () => {

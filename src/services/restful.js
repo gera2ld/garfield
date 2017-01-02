@@ -25,10 +25,7 @@ restful.posthandlers.push(data => {
   }
   return data;
 });
-restful.errhandlers.unshift(res => res && res.json && res.json().then(data => ({
-  status: res.status,
-  data,
-})), res => {
+restful.errhandlers.unshift(res => {
   if (res && res.data && res.data.message === 'Not Authorized') {
     location.href = './account/login';
   }

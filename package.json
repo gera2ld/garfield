@@ -2,12 +2,12 @@
   "name": "web-commander",
   "version": "0.5.0",
   "description": "Web server to execute commands.",
-  "main": "lib",
+  "main": "lib/server",
   "bin": {
     "web-commander": "bin/start.js"
   },
   "scripts": {
-    "start": "node lib",
+    "start": "node lib/server",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "test": "mocha test"
@@ -47,7 +47,7 @@
     "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
     "ora": "^0.3.0",
-    "restful-fetch": "^0.5.1",
+    "restful-fetch": "^0.5.2",
     "shelljs": "^0.7.5",
     "vue-code": "^1.1.0",
     "vue-loader": "^9.4.0",
