@@ -1,7 +1,7 @@
 <template>
   <div class="modal active">
     <div class="modal-overlay" @click="onOverlayClick"></div>
-    <div class="modal-container">
+    <form class="modal-container" @submit.prevent="onSubmit">
       <div class="modal-header">
         <slot name="header"></slot>
         <div class="modal-title" v-text="title"></div>
@@ -12,7 +12,7 @@
       <div class="modal-footer">
         <slot name="footer"></slot>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -21,7 +21,11 @@ export default {
   props: ['title'],
   methods: {
     onOverlayClick() {
-      this.$emit('overlayclick');
+      this.$emit('modalOverlayclick');
+      this.$emit('modalCancel');
+    },
+    onSubmit() {
+      this.$emit('modalSubmit');
     },
   },
 };

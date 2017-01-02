@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <modal class="task-detail" title="Task details" v-if="tasks.current" @overlayclick="onClose">
+    <modal class="task-detail" title="Task details" v-if="tasks.current" @modalCancel="onClose">
       <div class="clearfix mb-10">
         <div class="float-right">
           Status: <span :class="'task-status-'+tasks.current.status" v-text="tasks.current.status"></span>

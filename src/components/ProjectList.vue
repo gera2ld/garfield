@@ -25,18 +25,18 @@
       </div>
     </div>
     <command-list class="column col-8 flex flex-col flex-auto" v-if="current" :project="current"></command-list>
-    <modal title="Project details" v-if="editing" @overlayclick="onCancel">
+    <modal title="Project details" v-if="editing" @modalSubmit="onOK" @modalCancel="onCancel">
       <div class="form-group">
-        <label class="form-label">Name:</label>
-        <input class="form-input" v-model="editing.name">
+        <label class="form-label">Name: *</label>
+        <input class="form-input" v-model="editing.name" required>
       </div>
       <div class="form-group">
         <label class="form-label">Description:</label>
         <input class="form-input" v-model="editing.desc">
       </div>
       <div slot="footer">
-        <button class="btn btn-primary" @click="onOK">OK</button>
-        <button class="btn btn-cancel" @click="onCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn btn-cancel" @click="onCancel">Cancel</button>
       </div>
     </modal>
   </div>

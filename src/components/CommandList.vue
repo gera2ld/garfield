@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <modal class="command-modal" title="Command details" v-if="editing" @overlayclick="onCancel">
+    <modal class="command-modal" title="Command details" v-if="editing" @modalCancel="onCancel" @modalSubmit="onOK">
       <div class="form-group">
         <label class="form-label">Type:</label>
         <select class="form-select" :value="editing.type" disabled>
@@ -56,8 +56,8 @@
       </div>
       <vue-code class="command-code flex-auto" :code="editing.script" :options="codeOptions" @changed="onUpdateCode"></vue-code>
       <div slot="footer">
-        <button class="btn btn-primary" @click="onOK">OK</button>
-        <button class="btn btn-cancel" @click="onCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn btn-cancel" @click="onCancel">Cancel</button>
       </div>
     </modal>
   </div>
