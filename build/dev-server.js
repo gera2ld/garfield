@@ -7,6 +7,7 @@ var config = require('../config')
 var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
+var poll = config.nconf.get('WATCH_POLL')
 
 // default port where dev server listens for incoming traffic
 var port = config.dev.port
@@ -19,6 +20,10 @@ var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
+  watchOptions: {
+    aggregateTimeout: 1000,
+    poll: poll || null,
+  },
   stats: {
     colors: true,
     chunks: false
@@ -69,6 +74,7 @@ if (config.nconf.get('PORT')) {
   nodemon({
     script: 'lib/server',
     watch: 'lib',
+    legacyWatch: !!poll,
   })
   process.once('SIGINT', () => {
     process.exit(0);

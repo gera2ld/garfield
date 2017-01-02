@@ -25,11 +25,11 @@ restful.posthandlers.push(data => {
   }
   return data;
 });
-restful.errhandlers.unshift(res => {
+restful.errhandlers.push(res => {
   if (res && res.data && res.data.message === 'Not Authorized') {
     location.href = './account/login';
   }
-});
+}, restful.errhandlers.pop());
 
 export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
