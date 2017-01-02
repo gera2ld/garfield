@@ -39,3 +39,5 @@ export const Commands = restful.model('commands');
 export const Tasks = restful.model('tasks');
 
 export const Me = restful.model('me');
+
+export const Users = restful.model('users');

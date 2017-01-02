@@ -26,12 +26,12 @@
   white-space: nowrap;
 }
 
-.navbar-user {
+.user {
   margin-right: 2em;
 }
-.navbar-user > * {
+.user > * {
   vertical-align: middle;
 }
-.navbar-user > img {
+.user > img {
   height: 36px;
 }
