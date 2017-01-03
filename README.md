@@ -37,16 +37,24 @@ Config
 ---
 Default configurations can be overridden by environment variables.
 
-* HOST
+* `HOST`
 
   The server host, default as `''`.
 
-* PORT
+* `PORT`
 
   The server port, default as `2333`.
 
-* DATA_DIR
+* `DATA_DIR`
 
   The directory to store data, also as current working directory to start each task. Default as `data`.
 
   `DATA_DIR` can either be a path relative to current working directory or an absolute path.
+
+* `SUPER_USERS`
+
+  A list of user IDs. Users with IDs in the list will have super user permissions temporarily.
+
+* `GITHUB_CLIENT_ID` & `GITHUB_CLIENT_SECRET`
+
+  Required to log in with GitHub.

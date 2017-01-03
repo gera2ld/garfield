@@ -26,7 +26,7 @@ restful.posthandlers.push(data => {
   return data;
 });
 restful.errhandlers.push(res => {
-  if (res && res.data && res.data.message === 'Not Authorized') {
+  if (res && res.data && res.data.status === 401 && res.data.error === 'Not authorized') {
     location.href = './account/login';
   }
 }, restful.errhandlers.pop());
@@ -40,4 +40,23 @@ export const Tasks = restful.model('tasks');
 
 export const Me = restful.model('me');
 
+function parseUser(user) {
+  try {
+    user.permission = JSON.parse(user.permission);
+  } catch (e) {
+    user.permission = {};
+  }
+}
+
 export const Users = restful.model('users');
+Users.posthandlers.push(data => {
+  data.forEach(parseUser);
+  return data;
+});
+Users.Single = Users.model(':id');
+Users.Single.posthandlers.push(data => {
+  parseUser(data);
+  return data;
+});
+
+export const Consts = restful.model('consts');
