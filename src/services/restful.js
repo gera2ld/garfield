@@ -44,8 +44,8 @@ function parseUser(user) {
   try {
     user.permission = JSON.parse(user.permission);
   } catch (e) {
-    user.permission = {};
   }
+  user.permission = user.permission || {};
 }
 
 export const Users = restful.model('users');

@@ -1,7 +1,7 @@
 <template>
   <div class="command-list flex flex-col">
     <div class="command-ctrl mb-10">
-      <div v-dropdown>
+      <div v-dropdown v-if="permitCreate">
         <button class="btn btn-primary" dropdown-toggle>+ Command</button>
         <ul class="menu dropdown-menu">
           <li class="menu-item" v-for="type in types">
@@ -24,12 +24,12 @@
           <h4 class="card-title" v-text="command.desc"></h4>
           <div class="command-buttons float-right">
             <label class="form-switch">
-              <input type="checkbox" v-model="command.enabled" @change="switchCommand(command)">
+              <input type="checkbox" v-model="command.enabled" @change="switchCommand(command)" :disabled="!permitModify">
               <i class="form-icon"></i>
             </label>
             <button class="btn tooltip" data-tooltip="Run" @click="onRun(command)"><i class="fa fa-play"></i></button>
-            <button class="btn tooltip" data-tooltip="Edit" @click="onEdit(command)"><i class="fa fa-pencil"></i></button>
-            <button class="btn tooltip" data-tooltip="Remove" @click="onRemove(command)"><i class="fa fa-trash"></i></button>
+            <button class="btn tooltip" data-tooltip="Edit" @click="onEdit(command)" v-if="permitModify"><i class="fa fa-pencil"></i></button>
+            <button class="btn tooltip" data-tooltip="Remove" @click="onRemove(command)" v-if="permitModify"><i class="fa fa-trash"></i></button>
           </div>
         </div>
         <div class="card-body">
@@ -64,12 +64,14 @@
 </template>
 
 <script>
-import {Projects, Commands} from '../services/restful';
-import Modal from './Modal';
 import 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/shell/shell';
 import VueCode from 'vue-code';
+import {hasPermission} from '../utils';
+import {Projects, Commands} from '../services/restful';
+import store from '../services/store';
+import Modal from './Modal';
 
 const types = [
   {title: 'GitHook', value: 'githook'},
@@ -88,12 +90,21 @@ export default {
   },
   data() {
     return {
+      store,
       types,
       typeNames,
       editing: null,
       commands: [],
       messages: [],
     };
+  },
+  computed: {
+    permitCreate() {
+      return hasPermission(this.store.me.permission, 'project', 'create');
+    },
+    permitModify() {
+      return hasPermission(this.store.me.permission, 'project', 'modify');
+    }
   },
   created() {
     this.codeOptions = {

@@ -1,7 +1,7 @@
 <template>
   <div class="project-list columns">
     <div class="column col-4 flex flex-col">
-      <div class="project-ctrl mb-10">
+      <div class="project-ctrl mb-10" v-if="permitCreate">
         <button class="btn btn-primary" @click="addProject">+ Project</button>
       </div>
       <div class="project-ctrl mb-10">
@@ -14,7 +14,7 @@
         <div class="card hand project-item mb-10" v-for="project in projects"
           :class="{active:project===current}" @click="pick(project)">
           <div class="card-header">
-            <div class="float-right hover-show" @click.stop>
+            <div class="float-right hover-show" @click.stop v-if="permitModify">
               <button class="btn" @click="onEdit(project)"><i class="fa fa-pencil"></i></button>
               <button class="btn btn-danger" @click="onRemove(project)"><i class="fa fa-trash"></i></button>
             </div>
@@ -44,6 +44,8 @@
 
 <script>
 import {Projects} from '../services/restful';
+import store from '../services/store';
+import {hasPermission} from '../utils';
 import CommandList from './CommandList';
 import Modal from './Modal';
 
@@ -54,14 +56,20 @@ export default {
   },
   data() {
     return {
+      store,
       projects: [],
       current: null,
       search: '',
       editing: null,
     };
   },
-  created() {
-    this.load();
+  computed: {
+    permitCreate() {
+      return hasPermission(this.store.me.permission, 'project', 'create');
+    },
+    permitModify() {
+      return hasPermission(this.store.me.permission, 'project', 'modify');
+    }
   },
   methods: {
     load() {
@@ -117,6 +125,9 @@ export default {
     onCancel() {
       this.editing = null;
     },
+  },
+  created() {
+    this.load();
   },
 };
 </script>
