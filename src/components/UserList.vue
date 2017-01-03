@@ -16,7 +16,7 @@
           <td v-text="user.openId"></td>
           <td class="user">
             <img :src="user.avatar">
-            <span v-text="user.name"></span>
+            <span v-text="user.name || `(${user.login})`"></span>
           </td>
           <td v-text="user.email"></td>
           <td v-if="permitModify">
