@@ -110,8 +110,8 @@ export default {
       key === 'ended' && this.loadEndedTasks();
     },
     getDesc(task) {
-      const {command} = task;
-      const {project} = command;
+      const {command} = task || {desc: '???'};
+      const {project} = command || {desc: '???'};
       return `${project.desc} | ${command.desc}`;
     },
   },
