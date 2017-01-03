@@ -7,7 +7,7 @@
           <th>Open ID</th>
           <th>Name</th>
           <th>Email</th>
-          <th></th>
+          <th v-if="permitModify"></th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +19,7 @@
             <span v-text="user.name"></span>
           </td>
           <td v-text="user.email"></td>
-          <td>
+          <td v-if="permitModify">
             <button class="btn" @click="onEdit(user)"><i class="fa fa-pencil"></i></button>
           </td>
         </tr>
@@ -47,6 +47,8 @@
 
 <script>
 import {Users, Consts} from '../services/restful';
+import store from '../services/store';
+import {hasPermission} from '../utils';
 import Modal from './Modal';
 
 export default {
@@ -55,10 +57,16 @@ export default {
   },
   data() {
     return {
+      store,
       users: [],
       editing: null,
       permissions: [],
     };
+  },
+  computed: {
+    permitModify() {
+      return hasPermission(this.store.me.permission, 'user', 'modify');
+    }
   },
   methods: {
     load() {
