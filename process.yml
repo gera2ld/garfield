@@ -1,2 +1,4 @@
-name: web-commander
-script: lib
+apps:
+  name: web-commander
+  script: lib/server
+  merge_logs: true

@@ -1,7 +1,7 @@
 <template>
   <div class="project-list columns">
     <div class="column col-4 flex flex-col">
-      <div class="project-ctrl mb-10">
+      <div class="project-ctrl mb-10" v-if="permitCreate">
         <button class="btn btn-primary" @click="addProject">+ Project</button>
       </div>
       <div class="project-ctrl mb-10">
@@ -14,7 +14,7 @@
         <div class="card hand project-item mb-10" v-for="project in projects"
           :class="{active:project===current}" @click="pick(project)">
           <div class="card-header">
-            <div class="float-right hover-show" @click.stop>
+            <div class="float-right hover-show" @click.stop v-if="permitModify">
               <button class="btn" @click="onEdit(project)"><i class="fa fa-pencil"></i></button>
               <button class="btn btn-danger" @click="onRemove(project)"><i class="fa fa-trash"></i></button>
             </div>
@@ -25,18 +25,18 @@
       </div>
     </div>
     <command-list class="column col-8 flex flex-col flex-auto" v-if="current" :project="current"></command-list>
-    <modal title="Project details" v-if="editing" @overlayclick="onCancel">
+    <modal title="Project details" v-if="editing" @modalSubmit="onOK" @modalCancel="onCancel">
       <div class="form-group">
-        <label class="form-label">Name:</label>
-        <input class="form-input" v-model="editing.name">
+        <label class="form-label">Name: *</label>
+        <input class="form-input" v-model="editing.name" required>
       </div>
       <div class="form-group">
         <label class="form-label">Description:</label>
         <input class="form-input" v-model="editing.desc">
       </div>
       <div slot="footer">
-        <button class="btn btn-primary" @click="onOK">OK</button>
-        <button class="btn btn-cancel" @click="onCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">OK</button>
+        <button type="button" class="btn btn-cancel" @click="onCancel">Cancel</button>
       </div>
     </modal>
   </div>
@@ -44,6 +44,8 @@
 
 <script>
 import {Projects} from '../services/restful';
+import store from '../services/store';
+import {hasPermission} from '../utils';
 import CommandList from './CommandList';
 import Modal from './Modal';
 
@@ -54,14 +56,20 @@ export default {
   },
   data() {
     return {
+      store,
       projects: [],
       current: null,
       search: '',
       editing: null,
     };
   },
-  created() {
-    this.load();
+  computed: {
+    permitCreate() {
+      return hasPermission(this.store.me.permission, 'project', 'create');
+    },
+    permitModify() {
+      return hasPermission(this.store.me.permission, 'project', 'modify');
+    }
   },
   methods: {
     load() {
@@ -117,6 +125,9 @@ export default {
     onCancel() {
       this.editing = null;
     },
+  },
+  created() {
+    this.load();
   },
 };
 </script>

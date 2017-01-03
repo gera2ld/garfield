@@ -7,22 +7,22 @@
           &copy; <a href="https://gerald.top">Gerald</a> 2016
         </div>
       </div>
-      <div class="float-right navbar-user">
+      <div class="float-right user">
         <img :src="store.me.avatar">
         <span v-text="store.me.name"></span>
       </div>
       <strong>Web Commander</strong>
-      <nav class="navbar inline-block" v-if="store.me.permission > 0">
+      <nav class="navbar inline-block" v-if="menus.length">
         &gt;
-        <a href="#" :class="{active:componentName==='tasks'}">Tasks</a>
-        <a href="#projects" :class="{active:componentName==='projects'}">Projects</a>
+        <a v-for="menu in menus" v-if="menu.permitted" class="mr-5"
+        :href="`#${menu.value}`" :class="{active:current===menu}" v-text="menu.title"></a>
       </nav>
     </header>
-    <component :is="component" v-if="store.me.permission > 0" class="flex-auto"></component>
-    <div class="empty" v-if="!(store.me.permission > 0)">
+    <component :is="current.component" v-if="current.permitted" class="flex-auto"></component>
+    <div class="empty" v-if="!current.permitted">
       <div class="loading" v-if="!store.me.id"></div>
       <p v-if="!store.me.id">Authorizing...</p>
-      <p v-if="!(store.me.permission > 0)">Oops, permission denied!</p>
+      <p v-else>Oops, permission denied!</p>
     </div>
   </div>
 </template>
@@ -30,30 +30,65 @@
 <script>
 import ProjectList from './ProjectList';
 import TaskList from './TaskList';
+import UserList from './UserList';
 import store from '../services/store';
 
-const routes = {
-  projects: ProjectList,
-  tasks: TaskList,
-};
+function hasPermission(key, action) {
+  const permission = store.me.permission;
+  const actions = permission && permission[key] || [];
+  console.log(key, action, actions.includes(action));
+  return actions.includes(action);
+}
+
+const menus = [
+  {
+    value: 'task',
+    title: 'Tasks',
+    component: TaskList,
+    hasPermission() {
+      return hasPermission('project', 'show');
+    },
+  },
+  {
+    value: 'project',
+    title: 'Projects',
+    component: ProjectList,
+    hasPermission() {
+      return hasPermission('project', 'show');
+    },
+  },
+  {
+    value: 'user',
+    title: 'Users',
+    component: UserList,
+    hasPermission() {
+      return hasPermission('user', 'show');
+    },
+  },
+];
 
 export default {
-  components: {
-    ProjectList,
-  },
   data() {
     return {
       store,
-      componentName: null,
-      component: null,
+      menus: [],
+      current: {},
     };
+  },
+  watch: {
+    ['store.me'](me) {
+      this.menus = menus.map(menu => Object.assign({
+        permitted: menu.hasPermission(),
+      }, menu));
+      this.onUpdate && this.onUpdate();
+    },
   },
   created() {
     this.onUpdate = () => {
-      this.componentName = location.hash.slice(1);
-      this.component = routes[this.componentName];
-      if (!this.component) {
-        this.component = routes[this.componentName = 'tasks'];
+      const value = location.hash.slice(1);
+      this.current = this.menus.find(item => item.value === value);
+      if (!this.current) {
+        this.current = this.menus[0] || {};
       }
     };
     window.addEventListener('hashchange', this.onUpdate);

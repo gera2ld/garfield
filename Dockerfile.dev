@@ -9,6 +9,7 @@ EXPOSE 2333 8080
 
 COPY package.json $WORKDIR
 RUN cnpm i
+RUN rm -f package.json
 
 VOLUME $WORKDIR $WORKDIR/data $WORKDIR/node_modules
 

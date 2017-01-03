@@ -1,7 +1,7 @@
 import Restful from 'restful-fetch';
 
 const restful = new Restful({
-  root: '/api',
+  root: './api',
   presets: ['json'],
   config: {
     credentials: 'same-origin',
@@ -25,14 +25,11 @@ restful.posthandlers.push(data => {
   }
   return data;
 });
-restful.errhandlers.unshift(res => res && res.json && res.json().then(data => ({
-  status: res.status,
-  data,
-})), res => {
-  if (res && res.data && res.data.message === 'Not Authorized') {
-    location.href = '/account/login';
+restful.errhandlers.push(res => {
+  if (res && res.data && res.data.status === 401 && res.data.error === 'Not authorized') {
+    location.href = './account/login';
   }
-});
+}, restful.errhandlers.pop());
 
 export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
@@ -42,3 +39,24 @@ export const Commands = restful.model('commands');
 export const Tasks = restful.model('tasks');
 
 export const Me = restful.model('me');
+
+function parseUser(user) {
+  try {
+    user.permission = JSON.parse(user.permission);
+  } catch (e) {
+  }
+  user.permission = user.permission || {};
+}
+
+export const Users = restful.model('users');
+Users.posthandlers.push(data => {
+  data.forEach(parseUser);
+  return data;
+});
+Users.Single = Users.model(':id');
+Users.Single.posthandlers.push(data => {
+  parseUser(data);
+  return data;
+});
+
+export const Consts = restful.model('consts');
