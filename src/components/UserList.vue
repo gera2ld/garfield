@@ -16,11 +16,12 @@
           <td v-text="user.openId"></td>
           <td class="user">
             <img :src="user.avatar">
-            <span v-text="user.name || `(${user.login})`"></span>
+            <span v-text="getName(user)"></span>
           </td>
           <td v-text="user.email"></td>
           <td v-if="permitModify">
             <button class="btn" @click="onEdit(user)"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-danger" @click="onRemove(user)"><i class="fa fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
@@ -69,6 +70,9 @@ export default {
     }
   },
   methods: {
+    getName(user) {
+      return user.name || `(${user.login})`;
+    },
     load() {
       Users.get().then(users => {
         this.users = users;
@@ -87,6 +91,13 @@ export default {
           return res;
         }, {}),
       };
+    },
+    onRemove(user) {
+      confirm('Are you sure to remove user:\n' + this.getName(user))
+      && Users.Single.fill({id: user.id}).remove().then(() => {
+        const i = this.users.indexOf(user);
+        this.users.splice(i, 1);
+      });
     },
     onCancel() {
       this.editing = null;
