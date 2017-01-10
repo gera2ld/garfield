@@ -34,7 +34,7 @@ import UserList from './UserList';
 import store from '../services/store';
 
 function hasPermission(key, action) {
-  const permission = store.me.permission;
+  const {permission} = store.me;
   const actions = permission && permission[key] || [];
   console.log(key, action, actions.includes(action));
   return actions.includes(action);
@@ -76,14 +76,10 @@ export default {
     };
   },
   watch: {
-    ['store.me'](me) {
-      this.menus = menus.map(menu => Object.assign({
-        permitted: menu.hasPermission(),
-      }, menu));
-      this.onUpdate && this.onUpdate();
-    },
+    'store.me': 'loadMenus',
   },
   created() {
+    this.loadMenus();
     this.onUpdate = () => {
       const value = location.hash.slice(1);
       this.current = this.menus.find(item => item.value === value);
@@ -101,6 +97,14 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('hashchange', this.onUpdate);
+  },
+  methods: {
+    loadMenus() {
+      this.menus = menus.map(menu => Object.assign({
+        permitted: menu.hasPermission(),
+      }, menu));
+      this.onUpdate && this.onUpdate();
+    },
   },
 };
 </script>
