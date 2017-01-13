@@ -5,12 +5,12 @@ Vue.directive('dropdown', {
     function onClose(e) {
       if (e && el.contains(e.target)) return;
       isOpen = false;
-      el.classList.remove('open');
+      el.classList.remove('active');
       document.removeEventListener('mousedown', onClose, false);
     }
     function onOpen(_e) {
       isOpen = true;
-      el.classList.add('open');
+      el.classList.add('active');
       document.addEventListener('mousedown', onClose, false);
     }
     function onToggle(_e) {

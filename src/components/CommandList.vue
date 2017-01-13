@@ -10,7 +10,7 @@
         </ul>
       </div>
     </div>
-    <div class="toast mb-10">
+    <div class="mb-10">
       <div class="project-title" v-text="project.name"></div>
       <p v-text="project.desc"></p>
     </div>
