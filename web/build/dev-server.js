@@ -1,7 +1,6 @@
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
-var nodemon = require('nodemon')
 var proxyMiddleware = require('http-proxy-middleware')
 var config = require('../config')
 var webpackConfig = process.env.NODE_ENV === 'testing'
@@ -69,14 +68,3 @@ module.exports = app.listen(port, function (err) {
   }
   console.log('Listening at port ' + port + '\n')
 })
-
-if (config.nconf.get('PORT')) {
-  nodemon({
-    script: 'lib/server',
-    watch: 'lib',
-    legacyWatch: !!poll,
-  })
-  process.once('SIGINT', () => {
-    process.exit(0);
-  });
-}
