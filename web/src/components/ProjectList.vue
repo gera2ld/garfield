@@ -74,7 +74,6 @@ export default {
   methods: {
     load() {
       Projects.get().then(projects => {
-        console.log(projects);
         this.projects = projects;
       });
     },

@@ -4,7 +4,7 @@
       <div class="float-right navbar-copy">
         <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-style="mega" data-count-href="/gera2ld/web-commander/stargazers" data-count-api="/repos/gera2ld/web-commander#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
         <div class="inline-block">
-          &copy; <a href="https://gerald.top">Gerald</a> 2016
+          &copy; <a href="https://gerald.top">Gerald</a> 2017
         </div>
       </div>
       <div class="float-right user">

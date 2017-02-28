@@ -12,16 +12,22 @@
       </thead>
       <tbody>
         <tr v-for="user in users">
-          <td v-text="user.id"></td>
-          <td v-text="user.openId"></td>
-          <td class="user">
+          <td v-text="user.id" :class="{disabled: !user.isEnabled}"></td>
+          <td v-text="user.openId" :class="{disabled: !user.isEnabled}"></td>
+          <td class="user" :class="{disabled: !user.isEnabled}">
             <img :src="user.avatar">
             <span v-text="getName(user)"></span>
           </td>
-          <td v-text="user.email"></td>
+          <td v-text="user.email" :class="{disabled: !user.isEnabled}"></td>
           <td v-if="permitModify">
             <button class="btn" @click="onEdit(user)"><i class="fa fa-pencil"></i></button>
             <button class="btn btn-danger" @click="onRemove(user)"><i class="fa fa-trash"></i></button>
+            <div class="inline-block">
+              <div class="form-switch" @click="onToggle(user)">
+                <input type="checkbox" v-model="user.isEnabled">
+                <i class="form-icon"></i> &nbsp;
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -118,6 +124,15 @@ export default {
         this.editing = null;
       }, err => {
         console.error(err);
+      });
+    },
+    onToggle(user) {
+      const isEnabled = !user.isEnabled;
+      user.isEnabled = isEnabled;
+      Users.Single.fill({id: user.id})
+      .patch(null, {isEnabled})
+      .catch(err => {
+        user.isEnabled = !isEnabled;
       });
     },
   },
