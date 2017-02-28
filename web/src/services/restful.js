@@ -2,7 +2,6 @@ import Restful from 'restful-fetch';
 
 const restful = new Restful({
   root: './api',
-  presets: ['json'],
   config: {
     credentials: 'same-origin',
   },
@@ -25,11 +24,6 @@ restful.posthandlers.push(data => {
   }
   return data;
 });
-restful.errhandlers.push(res => {
-  if (res && res.data && res.data.status === 401 && res.data.error === 'Not authorized') {
-    location.href = './account/login';
-  }
-}, restful.errhandlers.pop());
 
 export const Projects = restful.model('projects');
 Projects.Commands = Projects.model(':id', 'commands');
