@@ -68,7 +68,7 @@ import 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/shell/shell';
 import VueCode from 'vue-code';
-import {hasPermission} from '../utils';
+import {hasPermission} from '../services';
 import {Projects, Commands} from '../services/restful';
 import store from '../services/store';
 import Modal from './Modal';
@@ -100,10 +100,10 @@ export default {
   },
   computed: {
     permitCreate() {
-      return hasPermission(this.store.me.permission, 'project', 'create');
+      return hasPermission('project', 'create');
     },
     permitModify() {
-      return hasPermission(this.store.me.permission, 'project', 'modify');
+      return hasPermission('project', 'modify');
     }
   },
   created() {

@@ -34,7 +34,7 @@
       <div v-for="group in permissions" class="form-group">
         <label v-text="`${group.key}:`" class="form-label"></label>
         <label v-for="value in group.data" class="form-switch">
-          <input type="checkbox" v-model="editing.permission[group.key][value]">
+          <input type="checkbox" v-model="editing.permissions[group.key][value]">
           <i class="form-icon"></i> {{value}}
         </label>
       </div>
@@ -47,9 +47,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import {Users, Consts} from '../services/restful';
 import store from '../services/store';
-import {hasPermission} from '../utils';
+import {hasPermission} from '../services';
 import Modal from './Modal';
 
 export default {
@@ -66,7 +67,7 @@ export default {
   },
   computed: {
     permitModify() {
-      return hasPermission(this.store.me.permission, 'user', 'modify');
+      return hasPermission('user', 'modify');
     }
   },
   methods: {
@@ -84,9 +85,9 @@ export default {
     onEdit(user) {
       this.editing = {
         user,
-        permission: this.permissions.reduce((res, {key}) => {
+        permissions: this.permissions.reduce((res, {key}) => {
           const map = res[key] = {};
-          const values = user.permission[key] || [];
+          const values = user.permissions[key] || [];
           values.forEach(value => map[value] = true);
           return res;
         }, {}),
@@ -103,14 +104,14 @@ export default {
       this.editing = null;
     },
     onOK() {
-      const {user, permission: result} = this.editing;
-      const permission = Object.keys(result).reduce((res, key) => {
+      const {user, permissions: result} = this.editing;
+      const permissions = Object.keys(result).reduce((res, key) => {
         const values = result[key];
         res[key] = Object.keys(values).filter(name => values[name]);
         return res;
       }, {});
       Users.Single.fill({id: user.id})
-      .put(null, {permission})
+      .patch(null, {permissions})
       .then(data => {
         const i = this.users.indexOf(user);
         ~i && Vue.set(this.users, i, data);

@@ -8,21 +8,21 @@ const restful = new Restful({
 });
 
 export default restful;
-restful.posthandlers.push(data => {
-  if (data && data.rows) {
-    let rows = [];
-    const meta = Object.keys(data).reduce((meta, key) => {
-      if (key === 'rows') {
-        rows = data[key];
+restful.posthandlers.push(res => {
+  if (res && res.data) {
+    let data = [];
+    const meta = Object.keys(res).reduce((meta, key) => {
+      if (key === 'data') {
+        data = res[key];
       } else {
-        meta[key] = data[key];
+        meta[key] = res[key];
       }
       return meta;
     }, {});
-    rows.meta = meta;
-    data = rows;
+    data.meta = meta;
+    res = data;
   }
-  return data;
+  return res;
 });
 
 export const Projects = restful.model('projects');

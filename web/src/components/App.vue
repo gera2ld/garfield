@@ -32,13 +32,7 @@ import ProjectList from './ProjectList';
 import TaskList from './TaskList';
 import UserList from './UserList';
 import store from '../services/store';
-
-function hasPermission(key, action) {
-  const {permission} = store.me;
-  const actions = permission && permission[key] || [];
-  console.log(key, action, actions.includes(action));
-  return actions.includes(action);
-}
+import {hasPermission} from '../services';
 
 const menus = [
   {

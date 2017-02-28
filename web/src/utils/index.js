@@ -17,8 +17,3 @@ export function formatLogs(data) {
     return chunk && `<span class="log-${safeHTML(item.type)}">${chunk}</span>`;
   }).join('');
 }
-
-export function hasPermission(permission, key, action) {
-  const values = permission && permission[key];
-  return values && values.includes(action);
-}

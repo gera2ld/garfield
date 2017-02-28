@@ -45,7 +45,7 @@
 <script>
 import {Projects} from '../services/restful';
 import store from '../services/store';
-import {hasPermission} from '../utils';
+import {hasPermission} from '../services';
 import CommandList from './CommandList';
 import Modal from './Modal';
 
@@ -65,15 +65,16 @@ export default {
   },
   computed: {
     permitCreate() {
-      return hasPermission(this.store.me.permission, 'project', 'create');
+      return hasPermission('project', 'create');
     },
     permitModify() {
-      return hasPermission(this.store.me.permission, 'project', 'modify');
+      return hasPermission('project', 'modify');
     }
   },
   methods: {
     load() {
       Projects.get().then(projects => {
+        console.log(projects);
         this.projects = projects;
       });
     },
