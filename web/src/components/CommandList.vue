@@ -54,7 +54,10 @@
         <label class="form-label">Data:</label>
         <input class="form-input" v-model="editing.data">
       </div>
-      <vue-code class="command-code flex-auto" :code="editing.script" :options="codeOptions" @changed="onUpdateCode"></vue-code>
+      <vue-code
+        class="command-code flex-auto"
+        v-model="editing.script" :options="codeOptions"
+      />
       <div slot="footer">
         <button type="submit" class="btn btn-primary">OK</button>
         <button type="button" class="btn btn-cancel" @click="onCancel">Cancel</button>
@@ -170,9 +173,6 @@ export default {
         const i = this.commands.indexOf(command);
         ~i && this.commands.splice(i, 1);
       });
-    },
-    onUpdateCode(script) {
-      this.editing.script = script;
     },
     onOK() {
       const {id} = this.editing;

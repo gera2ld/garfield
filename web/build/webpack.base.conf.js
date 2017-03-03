@@ -1,7 +1,11 @@
 var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
-var projectRoot = path.resolve(__dirname, '../')
+var vueLoaderConfig = require('./vue-loader.conf')
+
+function resolve(dir) {
+  return path.resolve(__dirname, '..', dir)
+}
 
 module.exports = {
   entry: {
@@ -13,76 +17,64 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, '../node_modules')],
+    extensions: ['.js', '.vue'],
+    modules: [resolve('node_modules')],
     alias: {
       // 'vue': 'vue/dist/vue.common.js',
       'src': path.resolve('src'),
       'assets': path.resolve('src/assets'),
       'components': path.resolve('src/components'),
-      'lib': path.resolve(__dirname, '../../lib'),
+      'lib': resolve('../lib'),
     }
   },
   resolveLoader: {
-    fallback: [path.join(__dirname, '../node_modules')]
+    modules: [resolve('node_modules')],
   },
   module: {
-    // preLoaders: [
-    //   {
-    //     test: /\.vue$/,
-    //     loader: 'eslint',
-    //     include: projectRoot,
-    //     exclude: /node_modules/
-    //   },
-    //   {
-    //     test: /\.js$/,
-    //     loader: 'eslint',
-    //     include: projectRoot,
-    //     exclude: /node_modules/
-    //   }
-    // ],
-    loaders: [
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'vue'
+        loader: 'vue-loader',
+        options: vueLoaderConfig,
       },
       {
         test: /\.js$/,
-        loader: 'babel',
-        include: projectRoot,
-        exclude: /node_modules/
+        loader: 'babel-loader',
+        include: [resolve('src')],
       },
+      // babel-loader for files out of project root
+      // 1. Presets and plugins will be looked up from the directory of the files
+      //    being processed, so they need to be resolved or required first.
+      //    e.g. require.resolve('babel-preset-es2015') or require('babel-preset-2015')
+      // 2. ES6 `import` is not compatible with CommonJS `module.exports`.
+      //    But babel-plugin-transform-runtime will add `import` to files, thus removed.
       {
-        test: /\.json$/,
-        loader: 'json'
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [resolve('../lib')],
+        options: {
+          presets: [
+            require('babel-preset-es2015'),
+            require('babel-preset-stage-2'),
+          ]
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
-    ]
-  },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  },
-  vue: {
-    loaders: utils.cssLoaders(),
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 2 versions']
-      })
     ]
   },
 }
