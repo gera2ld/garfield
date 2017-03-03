@@ -1,9 +1,11 @@
 import Vue from 'vue';
-import './components/dropdown';
+import {defaults as dropdownDefaults} from './components/dropdown';
 import App from './components/App';
 import './style.css';
 import {Me} from './services/restful';
 import store from './services/store';
+
+dropdownDefaults.active = 'active';
 
 Me.get().then(data => {
   store.me = data;

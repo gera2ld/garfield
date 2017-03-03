@@ -18,15 +18,25 @@
  * - focus: 'open' | false (default)
  *   If 'open', keep open when focused.
  *   Otherwise ignored.
+ * - active: 'show'
+ *   The class name to be added when active.
+ *   Default value is consistent with Bootstrap v4.
  */
 import Vue from 'vue';
+
+export const defaults = {
+  autoClose: false,
+  click: 'toggle',
+  focus: false,
+  active: 'show',
+};
 
 Vue.directive('dropdown', {
   bind: function (el, binding) {
     function doClose() {
       if (!isOpen) return;
       isOpen = false;
-      el.classList.remove('show');
+      el.classList.remove(active);
       document.removeEventListener('mousedown', onClose, false);
     }
     function onClose(e) {
@@ -36,7 +46,7 @@ Vue.directive('dropdown', {
     function onOpen(_e) {
       if (isOpen) return;
       isOpen = true;
-      el.classList.add('show');
+      el.classList.add(active);
       document.addEventListener('mousedown', onClose, false);
     }
     function onToggle(_e) {
@@ -52,8 +62,10 @@ Vue.directive('dropdown', {
     }
     let isOpen = false;
     const toggle = el.querySelector('[dropdown-toggle]');
-    const {value} = binding;
-    const {autoClose, click='toggle', focus=false} = value || {};
+    const {autoClose, click, focus, active} = {
+      ...defaults,
+      ...binding.value,
+    };
     if (click === 'toggle') {
       toggle.addEventListener('click', onToggle, false);
     } else if (click === 'open') {
