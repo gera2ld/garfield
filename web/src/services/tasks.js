@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import Logs from 'lib/utils/logs';
 import {formatLogs} from 'src/utils';
 import store from './store';
