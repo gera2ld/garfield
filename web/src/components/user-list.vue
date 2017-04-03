@@ -54,9 +54,9 @@
 
 <script>
 import Vue from 'vue';
-import {Users, Consts} from '../services/restful';
+import { Users, Consts } from '../services/restful';
 import store from '../services/store';
-import {hasPermission} from '../services';
+import { hasPermission } from '../services';
 import Modal from './Modal';
 
 export default {
@@ -74,7 +74,7 @@ export default {
   computed: {
     permitModify() {
       return hasPermission('user', 'modify');
-    }
+    },
   },
   methods: {
     getName(user) {
@@ -85,42 +85,44 @@ export default {
         this.users = users;
       });
       Consts.get('super_perm').then(data => {
-        this.permissions = Object.keys(data).map(key => ({key, data: data[key]}));
+        this.permissions = Object.keys(data).map(key => ({ key, data: data[key] }));
       });
     },
     onEdit(user) {
       this.editing = {
         user,
-        permissions: this.permissions.reduce((res, {key}) => {
-          const map = res[key] = {};
+        permissions: this.permissions.reduce((res, { key }) => {
+          const map = {};
+          res[key] = map;
           const values = user.permissions[key] || [];
-          values.forEach(value => map[value] = true);
+          values.forEach(value => { map[value] = true; });
           return res;
         }, {}),
       };
     },
     onRemove(user) {
-      confirm('Are you sure to remove user:\n' + this.getName(user))
-      && Users.Single.fill({id: user.id}).remove().then(() => {
-        const i = this.users.indexOf(user);
-        this.users.splice(i, 1);
-      });
+      if (confirm(`Are you sure to remove user:\n${this.getName(user)}`)) {
+        Users.Single.fill({ id: user.id }).remove().then(() => {
+          const i = this.users.indexOf(user);
+          this.users.splice(i, 1);
+        });
+      }
     },
     onCancel() {
       this.editing = null;
     },
     onOK() {
-      const {user, permissions: result} = this.editing;
+      const { user, permissions: result } = this.editing;
       const permissions = Object.keys(result).reduce((res, key) => {
         const values = result[key];
         res[key] = Object.keys(values).filter(name => values[name]);
         return res;
       }, {});
-      Users.Single.fill({id: user.id})
-      .patch(null, {permissions})
+      Users.Single.fill({ id: user.id })
+      .patch(null, { permissions })
       .then(data => {
         const i = this.users.indexOf(user);
-        ~i && Vue.set(this.users, i, data);
+        if (i >= 0) Vue.set(this.users, i, data);
         this.editing = null;
       }, err => {
         console.error(err);
@@ -129,9 +131,9 @@ export default {
     onToggle(user) {
       const isEnabled = !user.isEnabled;
       user.isEnabled = isEnabled;
-      Users.Single.fill({id: user.id})
-      .patch(null, {isEnabled})
-      .catch(err => {
+      Users.Single.fill({ id: user.id })
+      .patch(null, { isEnabled })
+      .catch(() => {
         user.isEnabled = !isEnabled;
       });
     },

@@ -43,10 +43,11 @@
 </template>
 
 <script>
-import {Projects} from '../services/restful';
+import Vue from 'vue';
+import { Projects } from '../services/restful';
 import store from '../services/store';
-import {hasPermission} from '../services';
-import CommandList from './CommandList';
+import { hasPermission } from '../services';
+import CommandList from './command-list';
 import Modal from './Modal';
 
 export default {
@@ -69,7 +70,7 @@ export default {
     },
     permitModify() {
       return hasPermission('project', 'modify');
-    }
+    },
   },
   methods: {
     load() {
@@ -91,12 +92,13 @@ export default {
       }, {});
     },
     onRemove(project) {
-      confirm('Are you sure to remove project:\n' + project.name)
-      && Projects.remove(project.id).then(() => {
-        const i = this.projects.indexOf(project);
-        ~i && this.projects.splice(i, 1);
-        if (this.current === project) this.current = null;
-      });
+      if (confirm(`Are you sure to remove project:\n${project.name}`)) {
+        Projects.remove(project.id).then(() => {
+          const i = this.projects.indexOf(project);
+          if (i >= 0) this.projects.splice(i, 1);
+          if (this.current === project) this.current = null;
+        });
+      }
     },
     pick(project) {
       this.current = project;
@@ -105,13 +107,13 @@ export default {
       this.search = '';
     },
     onOK() {
-      const {id} = this.editing;
+      const { id } = this.editing;
       (id
         ? Projects.put(id, this.editing)
         : Projects.post(null, this.editing))
       .then(data => {
         const i = this.projects.findIndex(item => item.id === id);
-        if (~i) {
+        if (i >= 0) {
           Vue.set(this.projects, i, Object.assign(this.projects[i], data));
         } else {
           this.projects.push(data);

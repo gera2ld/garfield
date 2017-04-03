@@ -24,6 +24,7 @@
  */
 import Vue from 'vue';
 
+/* eslint-disable import/prefer-default-export */
 export const defaults = {
   autoClose: false,
   click: 'toggle',
@@ -32,37 +33,10 @@ export const defaults = {
 };
 
 Vue.directive('dropdown', {
-  bind: function (el, binding) {
-    function doClose() {
-      if (!isOpen) return;
-      isOpen = false;
-      el.classList.remove(active);
-      document.removeEventListener('mousedown', onClose, false);
-    }
-    function onClose(e) {
-      if (e && el.contains(e.target)) return;
-      doClose();
-    }
-    function onOpen(_e) {
-      if (isOpen) return;
-      isOpen = true;
-      el.classList.add(active);
-      document.addEventListener('mousedown', onClose, false);
-    }
-    function onToggle(_e) {
-      isOpen ? onClose() : onOpen();
-    }
-    function onBlur(_e) {
-      setTimeout(() => {
-        const activeEl = document.activeElement;
-        if (activeEl !== document.body && !el.contains(activeEl)) {
-          doClose();
-        }
-      });
-    }
+  bind(el, binding) {
     let isOpen = false;
     const toggle = el.querySelector('[dropdown-toggle]');
-    const {autoClose, click, focus, active} = {
+    const { autoClose, click, focus, active } = {
       ...defaults,
       ...binding.value,
     };
@@ -75,7 +49,34 @@ Vue.directive('dropdown', {
       toggle.addEventListener('focus', onOpen, false);
       toggle.addEventListener('blur', onBlur, false);
     }
-    autoClose && el.addEventListener('mouseup', doClose, false);
+    if (autoClose) el.addEventListener('mouseup', doClose, false);
     el.classList.add('dropdown');
+    function doClose() {
+      if (!isOpen) return;
+      isOpen = false;
+      el.classList.remove(active);
+      document.removeEventListener('mousedown', onClose, false);
+    }
+    function onClose(e) {
+      if (e && el.contains(e.target)) return;
+      doClose();
+    }
+    function onOpen() {
+      if (isOpen) return;
+      isOpen = true;
+      el.classList.add(active);
+      document.addEventListener('mousedown', onClose, false);
+    }
+    function onToggle() {
+      (isOpen ? onClose : onOpen)();
+    }
+    function onBlur() {
+      setTimeout(() => {
+        const activeEl = document.activeElement;
+        if (activeEl !== document.body && !el.contains(activeEl)) {
+          doClose();
+        }
+      });
+    }
   },
 });

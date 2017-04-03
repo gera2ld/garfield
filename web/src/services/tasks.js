@@ -1,24 +1,67 @@
 import Vue from 'vue';
-import Logs from 'lib/utils/logs';
-import {formatLogs} from 'src/utils';
+import io from 'socket.io'; // eslint-disable-line import/no-extraneous-dependencies
+import Logs from 'logs';
+import { formatLogs } from 'src/utils';
 import store from './store';
-import {Tasks} from './restful';
+import { Tasks } from './restful';
+
+const socket = io(process.env.WEB_SOCKET_ORIGIN, {
+  path: `${location.pathname}ws`,
+});
+
+socket.on('updateQueue', queue => {
+  store.queued = keepLogs(store.queued, queue);
+});
+socket.on('update', data => {
+  const { id } = data;
+  const i = store.queued.findIndex(item => item.id === id);
+  if (i >= 0) {
+    const item = Object.assign(store.queued[i], data);
+    if (['error', 'finished'].includes(item.status)) {
+      store.queued.splice(i, 1);
+      store.ended.unshift(item);
+      // setTimeout(loadEnded, 1000);
+    } else {
+      Vue.set(store.queued, i, item);
+    }
+  }
+});
+socket.on('log', logData => {
+  const { id, data, start, offset, type } = logData;
+  const current = store.queued.find(item => item.id === id);
+  if (current && current.logs) {
+    current.logs.write(data, type, offset + start);
+    updateLog(current);
+  }
+});
+socket.on('setLog', data => {
+  const { id } = data;
+  const current = store.queued.concat(store.ended).find(item => item.id === id);
+  if (current) {
+    current.logs = new Logs(data);
+    updateLog(current);
+  }
+});
+
+emit('listQueue');
 
 function updateLog(item) {
-  item.logs && Vue.set(item, 'logData', formatLogs(item.logs.getValue()));
+  if (item.logs) Vue.set(item, 'logData', formatLogs(item.logs.getValue()));
 }
 
 function keepLogs(oldList, newList) {
-  const map = newList.reduce((map, item) => {
-    map[item.id] = item;
-    return map;
+  const map = newList.reduce((res, item) => {
+    res[item.id] = item;
+    return res;
   }, {});
   oldList.forEach(item => {
     const newItem = map[item.id];
-    newItem && [
-      'logs',
-      'logData',
-    ].forEach(key => newItem[key] = item[key]);
+    if (newItem) {
+      [
+        'logs',
+        'logData',
+      ].forEach(key => { newItem[key] = item[key]; });
+    }
   });
   return newList;
 }
@@ -33,43 +76,3 @@ export function loadEnded() {
     store.ended = keepLogs(store.ended, tasks);
   });
 }
-
-const socket = io(process.env.WEB_SOCKET_ORIGIN, {
-  path: location.pathname + 'ws',
-});
-
-socket.on('updateQueue', function (queue) {
-  store.queued = keepLogs(store.queued, queue);
-});
-socket.on('update', function (data) {
-  const {id} = data;
-  const i = store.queued.findIndex(item => item.id === id);
-  if (~i) {
-    const item = Object.assign(store.queued[i], data);
-    if (['error', 'finished'].includes(item.status)) {
-      store.queued.splice(i, 1);
-      store.ended.unshift(item);
-      // setTimeout(loadEnded, 1000);
-    } else {
-      Vue.set(store.queued, i, item);
-    }
-  }
-});
-socket.on('log', function (logData) {
-  const {id, data, start, offset, type} = logData;
-  const item = store.queued.find(item => item.id === id);
-  if (item && item.logs) {
-    item.logs.write(data, type, offset + start);
-    updateLog(item);
-  }
-});
-socket.on('setLog', function (data) {
-  const {id} = data;
-  const item = store.queued.find(item => item.id === id) || store.ended.find(item => item.id === id);
-  if (item) {
-    item.logs = new Logs(data);
-    updateLog(item);
-  }
-});
-
-emit('listQueue');

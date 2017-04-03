@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import ProjectList from './ProjectList';
-import TaskList from './TaskList';
-import UserList from './UserList';
+import ProjectList from './project-list';
+import TaskList from './task-list';
+import UserList from './user-list';
 import store from '../services/store';
-import {hasPermission} from '../services';
+import { hasPermission } from '../services';
 
 const menus = [
   {
@@ -97,7 +97,7 @@ export default {
       this.menus = menus.map(menu => Object.assign({
         permitted: menu.hasPermission(),
       }, menu));
-      this.onUpdate && this.onUpdate();
+      if (this.onUpdate) this.onUpdate();
     },
   },
 };

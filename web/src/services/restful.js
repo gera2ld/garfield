@@ -9,9 +9,10 @@ const restful = new Restful({
 
 export default restful;
 restful.posthandlers.push(res => {
+  let result = res;
   if (res && res.data) {
     let data = [];
-    const meta = Object.keys(res).reduce((meta, key) => {
+    data.meta = Object.keys(res).reduce((meta, key) => {
       if (key === 'data') {
         data = res[key];
       } else {
@@ -19,10 +20,9 @@ restful.posthandlers.push(res => {
       }
       return meta;
     }, {});
-    data.meta = meta;
-    res = data;
+    result = data;
   }
-  return res;
+  return result;
 });
 
 export const Projects = restful.model('projects');
@@ -38,6 +38,7 @@ function parseUser(user) {
   try {
     user.permission = JSON.parse(user.permission);
   } catch (e) {
+    // Ignore invalid JSON
   }
   user.permission = user.permission || {};
 }

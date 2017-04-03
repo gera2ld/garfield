@@ -1,5 +1,6 @@
 import * as time from './time';
-export {time};
+
+export { time };
 
 export function safeHTML(text) {
   return text.replace(/[<&]/g, m => ({
@@ -9,7 +10,7 @@ export function safeHTML(text) {
 }
 
 export function formatLogs(data) {
-  const {offset=0, meta, buffer} = data;
+  const { offset = 0, meta, buffer } = data;
   return meta.map(item => {
     const start = Math.max(0, item.start - offset);
     const end = Math.max(0, item.end - offset);

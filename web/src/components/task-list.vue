@@ -43,9 +43,9 @@
 
 <script>
 import store from 'src/services/store';
-import {emit, loadEnded} from 'src/services/tasks';
-import {Tasks} from 'src/services/restful';
-import {time} from '../utils';
+import { emit, loadEnded } from 'src/services/tasks';
+import { Tasks } from 'src/services/restful';
+import { time } from '../utils';
 import Modal from './Modal';
 
 export default {
@@ -62,9 +62,9 @@ export default {
     };
   },
   watch: {
-    ['tasks.current.logData']() {
+    'tasks.current.logData'() {
       this.$nextTick(() => {
-        const {logBox} = this.$refs;
+        const { logBox } = this.$refs;
         if (logBox) logBox.scrollTop = logBox.scrollHeight;
       });
     },
@@ -88,7 +88,7 @@ export default {
         : `Since ${time.formatTime(item.startedAt)}`;
     },
     onShowDetails(item) {
-      !item.logs && emit('readLog', item.id);
+      if (!item.logs) emit('readLog', item.id);
       this.tasks.current = item;
     },
     onClose() {
@@ -98,7 +98,7 @@ export default {
       Tasks.remove(task.id)
       .then(() => {
         const i = store.ended.indexOf(task);
-        ~i && store.ended.splice(i, 1);
+        if (i >= 0) store.ended.splice(i, 1);
       });
     },
     loadEndedTasks() {
@@ -107,11 +107,11 @@ export default {
     },
     switchTo(key) {
       this.tasks.key = key;
-      key === 'ended' && this.loadEndedTasks();
+      if (key === 'ended') this.loadEndedTasks();
     },
     getDesc(task) {
-      const {command} = task || {desc: '???'};
-      const {project} = command || {desc: '???'};
+      const { command } = task || { desc: '???' };
+      const { project } = command || { desc: '???' };
       return `${project.desc} | ${command.desc}`;
     },
   },

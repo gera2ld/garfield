@@ -67,18 +67,19 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/shell/shell';
 import VueCode from 'vue-code';
-import {hasPermission} from '../services';
-import {Projects, Commands} from '../services/restful';
+import { hasPermission } from '../services';
+import { Projects, Commands } from '../services/restful';
 import store from '../services/store';
 import Modal from './Modal';
 
 const types = [
-  {title: 'GitHook', value: 'githook'},
-  {title: 'Simple', value: 'simple'},
+  { title: 'GitHook', value: 'githook' },
+  { title: 'Simple', value: 'simple' },
 ];
 const typeNames = types.reduce((map, item) => {
   map[item.value] = item.title;
@@ -107,7 +108,7 @@ export default {
     },
     permitModify() {
       return hasPermission('project', 'modify');
-    }
+    },
   },
   created() {
     this.codeOptions = {
@@ -118,41 +119,43 @@ export default {
   },
   methods: {
     load() {
-      Projects.Commands.fill({id: this.project.id}).get()
+      Projects.Commands.fill({ id: this.project.id }).get()
       .then(commands => {
         this.commands = commands;
       });
     },
-    addCommand(type) {
-      this.onEdit({type: type.value});
+    addCommand({ value: type }) {
+      this.onEdit({ type });
     },
-    addMessage(text, className, delay=3000) {
+    addMessage(text, className, delay = 3000) {
       const messages = this.messages;
       const message = {
-        text, className,
+        text,
+        className,
         dismiss() {
           const i = messages.indexOf(message);
-          ~i && messages.splice(i, 1);
+          if (i >= 0) messages.splice(i, 1);
         },
       };
       this.messages.push(message);
       setTimeout(message.dismiss, delay);
     },
     switchCommand(command) {
-      Commands.put(command.id, {enabled: command.enabled})
+      Commands.put(command.id, { enabled: command.enabled })
       .catch(err => {
         command.enabled = !command.enabled;
         console.error(err);
       });
     },
     onRun(command) {
-      confirm('Are you sure to run command:\n' + command.desc)
-      && Commands.model(command.id).post('run')
-      .then(() => {
-        this.addMessage('Task created.', 'toast-success');
-      }, err => {
-        this.addMessage(err, 'toast-danger');
-      });
+      if (confirm(`Are you sure to run command:\n${command.desc}`)) {
+        Commands.model(command.id).post('run')
+        .then(() => {
+          this.addMessage('Task created.', 'toast-success');
+        }, err => {
+          this.addMessage(err, 'toast-danger');
+        });
+      }
     },
     onEdit(command) {
       this.editing = [
@@ -167,21 +170,22 @@ export default {
       }, {});
     },
     onRemove(command) {
-      confirm('Are you sure to remove command:\n' + command.desc)
-      && Commands.remove(command.id)
-      .then(() => {
-        const i = this.commands.indexOf(command);
-        ~i && this.commands.splice(i, 1);
-      });
+      if (confirm(`Are you sure to remove command:\n${command.desc}`)) {
+        Commands.remove(command.id)
+        .then(() => {
+          const i = this.commands.indexOf(command);
+          if (i >= 0) this.commands.splice(i, 1);
+        });
+      }
     },
     onOK() {
-      const {id} = this.editing;
+      const { id } = this.editing;
       (id
         ? Commands.put(id, this.editing)
-        : Projects.Commands.fill({id: this.project.id}).post(null, this.editing))
+        : Projects.Commands.fill({ id: this.project.id }).post(null, this.editing))
       .then(data => {
         const i = this.commands.findIndex(item => item.id === id);
-        if (~i) {
+        if (i >= 0) {
           Vue.set(this.commands, i, Object.assign(this.commands[i], data));
         } else {
           this.commands.push(data);
