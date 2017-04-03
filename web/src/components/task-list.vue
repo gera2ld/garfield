@@ -129,23 +129,28 @@ export default {
   height: 60vh;
   padding: 10px;
   background: #eee;
+  & .log-err {
+    color: red;
+  }
 }
-.task-log .log-err {
-  color: red;
-}
-.task-detail .modal-body {
-  max-height: none;
-  display: flex;
-  flex-direction: column;
-}
-.task-detail .modal-footer {
-  display: none;
+.task-detail {
+  .modal-container {
+    width: 80%;
+  }
+  .modal-body {
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-footer {
+    display: none;
+  }
 }
 .task-item {
   margin-left: 0;
   margin-right: 0;
-}
-.task-item:hover {
-  background: #eee;
+  &:hover {
+    background: #eee;
+  }
 }
 </style>

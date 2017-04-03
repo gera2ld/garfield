@@ -2,7 +2,7 @@ node_modules
 dist
 *.log
 *.lock
-/config.yml
+config.yml
 
 /data/*
 !.gitkeep

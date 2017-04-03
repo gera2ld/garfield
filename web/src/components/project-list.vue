@@ -144,4 +144,7 @@ export default {
 .project-ctrl > * {
   vertical-align: middle;
 }
+.project-list .modal-container {
+  width: 60%;
+}
 </style>
