@@ -111,8 +111,8 @@ export default {
     },
     getDesc(task) {
       const { command } = task || { desc: '???' };
-      const { project } = command || { desc: '???' };
-      return `${project.desc} | ${command.desc}`;
+      const { project } = command || { name: '???' };
+      return `${project.name} | ${command.desc}`;
     },
   },
 };
