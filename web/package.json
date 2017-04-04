@@ -10,6 +10,7 @@
     "build": "node build/build.js",
     "dev": "node build/dev-server.js",
     "lint": "eslint --ext .js,.vue src",
+    "deploy": "sh build/deploy.sh",
     "test": "mocha"
   },
   "keywords": [

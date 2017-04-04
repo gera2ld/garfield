@@ -1,5 +1,6 @@
 node_modules
 dist
+dist.tar.gz
 *.log
 *.lock
 config.yml
