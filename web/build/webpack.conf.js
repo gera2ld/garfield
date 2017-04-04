@@ -24,7 +24,6 @@ const base = {
     extensions: ['.js', '.vue'],
     alias: {
       src: resolve('src'),
-      logs: resolve('../lib/utils/logs'),
     }
   },
   module: {
@@ -60,7 +59,9 @@ const base = {
   },
 };
 
-module.exports = Object.assign({}, base, {
+const targets = module.exports = [];
+
+targets.push(Object.assign({}, base, {
   entry: {
     app: 'src/app.js',
   },
@@ -85,7 +86,7 @@ module.exports = Object.assign({}, base, {
     ] : [
       // extract css into its own file
       new ExtractTextPlugin('[name].[contenthash].css'),
-      new OptimizeCSSPlugin(),
+      new OptimizeCSSPlugin({ canPrint: false }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
@@ -93,4 +94,16 @@ module.exports = Object.assign({}, base, {
       }),
     ],
   ],
-});
+}));
+
+targets.push(Object.assign({}, base, {
+  entry: {
+    logs: 'src/services/logs',
+  },
+  output: {
+    path: resolve(DIST),
+    libraryTarget: 'commonjs',
+    filename: '[name].js',
+  },
+  devtool: false,
+}));

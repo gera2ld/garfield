@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import io from 'socket.io'; // eslint-disable-line import/no-extraneous-dependencies
-import Logs from 'logs';
 import { formatLogs } from 'src/utils';
 import store from './store';
 import { Tasks } from './restful';
+import Logs from './logs';
 
 const socket = io(process.env.WEB_SOCKET_ORIGIN, {
   path: `${location.pathname}ws`,

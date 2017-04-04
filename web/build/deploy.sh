@@ -2,7 +2,7 @@ set -e
 DIST_PKG=dist.tar.gz
 BASE_DIR='~/Git/web-commander'
 DATA_DIR=$BASE_DIR/data
-DIST_DIR=$BASE_DIR/dist
+DIST_DIR=$BASE_DIR/web/dist
 
 tar -zcf $DIST_PKG -C dist .
 scp $DIST_PKG gerald:$DATA_DIR

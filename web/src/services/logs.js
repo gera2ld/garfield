@@ -1,21 +1,20 @@
-class Logs {
-  constructor(data={}, options={}) {
+export default class Logs {
+  constructor(data = {}, options = {}) {
     this.bufsize = options.bufsize || 10 * 1024;
     this.offset = data.offset || 0;
     this.meta = data.meta || [];
     this.buffer = data.buffer || '';
   }
 
-  write(data, type, offset) {
-    data = data.toString('utf8');
+  write(raw, type, offset) {
+    const data = raw.toString('utf8');
     let buf = '';
     let lastEnter = -1;
-    const length = data.length;
     let lOffset = offset == null ? this.buffer.length : offset - this.offset;
-    for (let i = 0; i < length; i ++) {
+    for (let i = 0; i < data.length; i += 1) {
       const c = data.charAt(i);
       if (c === '\r') {
-        if (~lastEnter) {
+        if (lastEnter >= 0) {
           buf = buf.slice(0, lastEnter + 1);
         } else {
           buf = '';
@@ -26,30 +25,27 @@ class Logs {
       } else if (c === '\b') {
         if (buf) {
           if (buf.charAt(buf.length - 1) !== '\n') buf = buf.slice(0, -1);
-        } else {
-          if (lOffset > 0 && this.buffer.charAt(lOffset - 1) !== '\n') lOffset --;
-        }
+        } else if (lOffset > 0 && this.buffer.charAt(lOffset - 1) !== '\n') lOffset -= 1;
       } else {
         if (c === '\n') lastEnter = buf.length;
         buf += c;
       }
     }
-    offset = this.offset + lOffset;
-    for (let i = this.meta.length; i --; ) {
+    const endOffset = this.offset + lOffset;
+    for (let i = this.meta.length - 1; i >= 0; i -= 1) {
       const item = this.meta[i];
-      if (item.start >= offset) {
+      if (item.start >= endOffset) {
         this.meta.pop();
       } else {
-        if (item.end > offset) item.end = offset;
+        if (item.end > endOffset) item.end = endOffset;
         break;
       }
     }
-    type = type || 'out';
-    this.buffer = this.buffer.slice(0, offset) + buf;
+    this.buffer = this.buffer.slice(0, endOffset) + buf;
     const metaItem = {
-      type,
-      start: this.offset + offset,
-      end: this.offset + offset + buf.length,
+      type: type || 'out',
+      start: this.offset + endOffset,
+      end: this.offset + endOffset + buf.length,
     };
     const lastMetaItem = this.meta[this.meta.length - 1];
     if (lastMetaItem && lastMetaItem.type === metaItem.type) {
@@ -60,11 +56,11 @@ class Logs {
     if (this.bufsize && this.buffer.length > this.bufsize) {
       this.offset += this.buffer.length - this.bufsize;
       this.buffer = this.buffer.slice(-this.bufsize);
-      for (let i = 0; i < this.meta.length; i ++) {
+      for (let i = 0; i < this.meta.length; i += 1) {
         const item = this.meta[i];
         if (item.end <= this.offset) {
           this.meta.shift();
-          i --;
+          i -= 1;
         } else break;
       }
     }
@@ -72,17 +68,18 @@ class Logs {
   }
 
   getPiece(index) {
-    if (index == null) index = this.meta.length - 1;
-    const meta = this.meta[index];
-    if (meta) return Object.assign({
-      data: this.buffer.slice(meta.start, meta.end),
-      offset: this.offset,
-    }, meta);
+    const i = index == null ? this.meta.length - 1 : index;
+    const meta = this.meta[i];
+    if (meta) {
+      return Object.assign({
+        data: this.buffer.slice(meta.start, meta.end),
+        offset: this.offset,
+      }, meta);
+    }
   }
 
   getValue() {
-    return {buffer: this.buffer, meta: this.meta, offset: this.offset};
+    const { buffer, meta, offset } = this;
+    return { buffer, meta, offset };
   }
 }
-
-module.exports = Logs;
