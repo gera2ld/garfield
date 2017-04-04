@@ -7,10 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "build": "node build/build.js",
     "dev": "node build/dev-server.js",
     "lint": "eslint --ext .js,.vue src",
     "analyze": "webpack --profile --json --config build/webpack.conf.js | webpack-bundle-size-analyzer",
+    "predeploy": "node build/build.js",
     "deploy": "sh build/deploy.sh",
     "test": "mocha"
   },

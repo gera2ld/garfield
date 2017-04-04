@@ -10,7 +10,6 @@ module.exports = {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
     assetsPublicPath: './',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
@@ -28,8 +27,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: nconf.get('PORT'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     proxyTable: {
       '/account/': backend,
       '/api/': backend,

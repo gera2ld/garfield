@@ -17,7 +17,7 @@ function resolve(dir) {
 const base = {
   output: {
     path: resolve(DIST),
-    publicPath: '/',
+    publicPath: IS_DEV ? config.dev.assetsPublicPath : config.build.assetsPublicPath,
     filename: IS_DEV ? '[name].js' : '[name].[chunkhash].js',
   },
   resolve: {
