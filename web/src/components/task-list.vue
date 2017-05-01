@@ -16,14 +16,16 @@
       </div>
     </div>
     <div class="flex-auto" v-if="selected.length">
-      <div class="task-item columns" v-for="task in selected">
-        <div class="column col-1">
+      <div class="task-item columns" v-for="(task, index) in selected">
+        <div class="column col-1 col-sm-2">
           [<span class="text-muted" v-text="task.id"></span>]
         </div>
-        <div class="column col-6" v-text="getDesc(task)"></div>
-        <div class="column col-1" v-text="task.status" :class="'task-status-'+task.status"></div>
-        <div class="column col-2 tooltip tooltip-left text-nowrap" v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
-        <div class="column col-2 text-right">
+        <div class="column col-4 col-sm-10" v-text="getDesc(task)"></div>
+        <div class="column col-2 col-sm-3" v-text="task.status" :class="'task-status-'+task.status"></div>
+        <div class="column col-2 col-sm-4 tooltip text-nowrap"
+          :class="index > 0 ? 'tooltip-top' : 'tooltip-bottom'"
+          v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
+        <div class="column col-3 col-sm-5 text-right">
           <button class="btn btn-sm text-uppercase" @click="onShowDetails(task)">Log</button>
           <button class="btn btn-sm" v-if="tasks.key==='ended'" @click="onRemove(task)"><i class="fa fa-trash"></i></button>
         </div>

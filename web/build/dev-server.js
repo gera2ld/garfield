@@ -16,7 +16,8 @@ var app = express()
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
+  // publicPath: webpackConfig[0].output.publicPath,
+  publicPath: '/',
   watchOptions: {
     aggregateTimeout: 1000,
     poll: poll || null,
@@ -40,7 +41,10 @@ compiler.plugin('compilation', function (compilation) {
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
-    options = { target: options }
+    options = {
+      target: options,
+      changeOrigin: true,
+    }
   }
   app.use(proxyMiddleware(context, options))
 })
@@ -56,7 +60,7 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // serve pure static assets
-var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+var staticPath = config.dev.assetsPublicPath
 app.use(staticPath, express.static('./static'))
 
 module.exports = app.listen(port, function (err) {

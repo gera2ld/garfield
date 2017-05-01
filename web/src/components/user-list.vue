@@ -143,3 +143,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.user-list {
+  .table {
+    min-width: 600px;
+  }
+}
+</style>

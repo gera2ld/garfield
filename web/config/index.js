@@ -1,8 +1,6 @@
+const path = require('path');
 const nconf = require('./nconf');
 const backend = nconf.get('BACKEND');
-
-// see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
 
 module.exports = {
   nconf,

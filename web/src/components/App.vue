@@ -1,22 +1,23 @@
 <template>
   <div id="app" class="container grid-960 flex flex-col">
-    <header>
-      <div class="float-right navbar-copy">
+    <header class="columns">
+      <div class="brand hide-xs">
+        <strong>Web Commander</strong>
+      </div>
+      <nav class="navbar" v-if="menus.length">
+        <a v-for="menu in menus" v-if="menu.permitted" class="mr-5"
+        :href="`#${menu.value}`" :class="{active:current===menu}" v-text="menu.title"></a>
+      </nav>
+      <div class="user flex-auto text-right">
+        <img :src="store.me.avatar">
+        <span v-text="store.me.name"></span>
+      </div>
+      <div class="navbar-copy hide-md">
         <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-style="mega" data-count-href="/gera2ld/web-commander/stargazers" data-count-api="/repos/gera2ld/web-commander#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
         <div class="inline-block">
           &copy; <a href="https://gerald.top">Gerald</a> 2017
         </div>
       </div>
-      <div class="float-right user">
-        <img :src="store.me.avatar">
-        <span v-text="store.me.name"></span>
-      </div>
-      <strong>Web Commander</strong>
-      <nav class="navbar inline-block" v-if="menus.length">
-        &gt;
-        <a v-for="menu in menus" v-if="menu.permitted" class="mr-5"
-        :href="`#${menu.value}`" :class="{active:current===menu}" v-text="menu.title"></a>
-      </nav>
     </header>
     <component :is="current.component" v-if="current.permitted" class="flex-auto"></component>
     <div class="empty" v-if="!current.permitted">
@@ -109,29 +110,47 @@ export default {
 }
 
 header {
-  padding: 1rem 0;
+  flex: 0 0 auto;
+  > * {
+    padding: 1rem;
+    line-height: 36px;
+  }
 }
 
-header > * {
-  line-height: 36px;
+.brand {
+  position: relative;
+  > strong {
+    font-size: 2rem;
+  }
+  &::after {
+    content: '>';
+    position: absolute;
+    top: 1rem;
+    right: -.5rem;
+  }
 }
 
-header > strong {
-  font-size: 2rem;
+.user {
+  > * {
+    vertical-align: middle;
+  }
+  > img {
+    height: 36px;
+  }
 }
 
-.navbar > a {
-  color: #999;
-  text-decoration: none;
-}
-
-.navbar > a.active {
-  font-size: 1.2em;
-}
-
-.navbar > a.active,
-.navbar > a:hover {
-  color: #5764c6;
+.navbar {
+  > a {
+    color: #999;
+    text-decoration: none;
+    &.active {
+      font-size: 1.2em;
+    }
+    &.active,
+    &:hover {
+      color: #5764c6;
+    }
+  }
 }
 
 .navbar-copy {

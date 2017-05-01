@@ -72,6 +72,9 @@ targets.push(Object.assign({}, base, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      minChunks(module, count) {
+        return /node_modules/.test(module.context);
+      },
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
