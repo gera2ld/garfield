@@ -1,0 +1,18 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "targets": {
+        "node": "current",
+      },
+    }],
+    "stage-2",
+  ],
+  "plugins": [
+    ["transform-runtime", {
+      "polyfill": false,
+    }],
+    "transform-export-extensions",
+  ],
+  "comments": false
+}
