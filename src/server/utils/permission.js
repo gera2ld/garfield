@@ -1,4 +1,5 @@
-import { wraps, setError, object } from './helpers';
+import { objectGet } from '#/common/object';
+import { wraps, setError } from './helpers';
 
 const actionMap = {
   modify: ['create', 'modify'],
@@ -25,10 +26,10 @@ export function permit(key, actions) {
   }
   return wraps(async (ctx, next) => {
     const { user } = ctx.state;
-    if (!object.get(user, 'id')) return setError(ctx, 401, 'Not authorized');
+    if (!objectGet(user, 'id')) return setError(ctx, 401, 'Not authorized');
     let authorized = user.isEnabled;
     if (authorized && key) {
-      const permissions = object.get(user, ['permissions', key]) || [];
+      const permissions = objectGet(user, ['permissions', key]) || [];
       authorized = actions.some(action => permissions.includes(action));
     }
     if (!authorized) return setError(ctx, 403, 'Forbidden');

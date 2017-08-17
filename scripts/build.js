@@ -17,11 +17,6 @@ console.log(
 var spinner = ora('building for production...')
 spinner.start()
 
-var assetsPath = config.build.assetsRoot;
-rm('-rf', assetsPath)
-mkdir('-p', assetsPath)
-cp('-R', 'src/static/', assetsPath)
-
 webpack(webpackConfig, function (err, stats) {
   spinner.stop()
   if (err) throw err

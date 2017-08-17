@@ -11,8 +11,10 @@
 }
 
 .modal-content {
+  margin: 10vh auto;
   padding: 20px;
   background: white;
+  text-align: left;
 }
 
 a:focus {

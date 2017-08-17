@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import io from 'socket.io'; // eslint-disable-line import/no-extraneous-dependencies
-import Logs from 'src/common/logs';
+import Logs from '#/common/logs';
 import { formatLogs, store } from '../utils';
 import { Tasks } from './restful';
 
-const dirname = location.pathname.replace(/[^/]*$/, '');
+const dirname = window.location.pathname.replace(/[^/]*$/, '');
 const socket = io(dirname, { path: `${dirname}ws/` });
 
 socket.on('updateQueue', queue => {
@@ -25,7 +25,9 @@ socket.on('update', data => {
   }
 });
 socket.on('log', logData => {
-  const { id, data, start, offset, type } = logData;
+  const {
+    id, data, start, offset, type,
+  } = logData;
   const current = store.queued.find(item => item.id === id);
   if (current && current.logs) {
     current.logs.write(data, type, offset + start);

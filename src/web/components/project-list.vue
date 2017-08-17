@@ -1,17 +1,17 @@
 <template>
   <div class="project-list columns">
     <div class="column col-4 flex flex-col">
-      <div class="project-ctrl mb-10" v-if="permitCreate">
+      <div class="project-ctrl mb-2" v-if="permitCreate">
         <button class="btn btn-primary" @click="addProject">+ Project</button>
       </div>
-      <div class="project-ctrl mb-10">
+      <div class="project-ctrl mb-2">
         <div class="input-group">
           <input type="search" class="form-input" v-model="search">
           <button class="btn input-group-btn" @click="clearSearch">&#xd7;</button>
         </div>
       </div>
       <div class="flex-auto">
-        <div class="card hand project-item mb-10" v-for="project in projects"
+        <div class="card hand project-item mb-2" v-for="project in projects"
           :class="{active:project===current}" @click="pick(project)">
           <div class="card-header">
             <div class="float-right hover-show" @click.stop v-if="permitModify">
@@ -47,10 +47,10 @@
 
 <script>
 import Vue from 'vue';
-import { Projects } from 'src/web/services/restful';
-import { store, hasPermission } from 'src/web/utils';
+import Modal from 'vueleton/lib/modal';
+import { Projects } from '#/web/services/restful';
+import { store, hasPermission } from '#/web/utils';
 import CommandList from './command-list';
-import { Modal } from './vueleton';
 
 export default {
   components: {
@@ -146,7 +146,7 @@ export default {
 .project-ctrl > * {
   vertical-align: middle;
 }
-.project-list .modal-container {
+.project-list .modal-content {
   width: 60%;
 }
 </style>

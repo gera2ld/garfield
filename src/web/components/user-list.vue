@@ -22,7 +22,7 @@
           <td v-if="permitModify">
             <button class="btn" @click="onEdit(user)"><i class="fa fa-pencil"></i></button>
             <button class="btn btn-danger" @click="onRemove(user)"><i class="fa fa-trash"></i></button>
-            <div class="inline-block">
+            <div class="d-inline-block">
               <div class="form-switch" @click="onToggle(user)">
                 <input type="checkbox" v-model="user.isEnabled">
                 <i class="form-icon"></i> &nbsp;
@@ -33,9 +33,9 @@
       </tbody>
     </table>
     <modal :visible="!!editing" @close="onCancel">
-      <form class="modal-content" v-if="editing" @submit="onOK">
+      <form class="modal-content d-inline-block" v-if="editing" @submit="onOK">
         <h3>User permissions</h3>
-        <div class="user mb-10">
+        <div class="user mb-2">
           <img :src="editing.user.avatar">
           <span v-text="editing.user.name"></span>
         </div>
@@ -57,9 +57,9 @@
 
 <script>
 import Vue from 'vue';
+import Modal from 'vueleton/lib/modal';
 import { Users, Consts } from '../services/restful';
 import { store, hasPermission } from '../utils';
-import { Modal } from './vueleton';
 
 export default {
   components: {

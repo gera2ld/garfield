@@ -1,7 +1,6 @@
 import * as time from './time';
 import store from './store';
 
-export * from 'src/common/helpers';
 export { time, store };
 
 export function safeHTML(text) {

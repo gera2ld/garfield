@@ -9,7 +9,7 @@ Me.get().then(data => {
   store.me = data;
 }, ({ status }) => {
   if (status === 401) {
-    location.href = './account/login';
+    window.location.assign('./account/login');
   } else if (status === 403) {
     store.me = { id: -1 };
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="command-list flex flex-col">
-    <div class="command-ctrl mb-10">
+    <div class="command-ctrl mb-2">
       <dropdown v-if="permitCreate">
         <button class="btn btn-primary" slot="toggle">+ Command</button>
         <ul class="menu">
@@ -10,16 +10,16 @@
         </ul>
       </dropdown>
     </div>
-    <div class="mb-10">
+    <div class="mb-2">
       <div class="project-title" v-text="project.name"></div>
       <p v-text="project.desc"></p>
     </div>
-    <div class="toast mb-10" v-for="message in messages" :class="message.className">
+    <div class="toast mb-2" v-for="message in messages" :class="message.className">
       <button class="btn btn-clear float-right" @click="message.dismiss"></button>
       <div v-text="message.text"></div>
     </div>
     <div class="flex-auto">
-      <div class="card command-item mb-5" v-for="command in commands">
+      <div class="card command-item mb-1" v-for="command in commands">
         <div class="card-header">
           <h4 class="card-title" v-text="command.desc"></h4>
           <div class="command-buttons float-right">
@@ -56,8 +56,8 @@
           <label class="form-label">Data:</label>
           <input class="form-input" v-model="editing.data">
         </div>
-        <vue-code
-          class="command-code flex-auto"
+        <vl-code
+          class="form-group command-code flex-auto"
           v-model="editing.script" :options="codeOptions"
         />
         <footer>
@@ -74,10 +74,11 @@ import Vue from 'vue';
 import 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/shell/shell';
-import VueCode from 'vue-code';
+import Modal from 'vueleton/lib/modal';
+import Dropdown from 'vueleton/lib/dropdown';
+import VlCode from 'vueleton/lib/code';
 import { store, hasPermission } from '../utils';
 import { Projects, Commands } from '../services/restful';
-import { Modal, Dropdown } from './vueleton';
 
 const types = [
   { title: 'GitHook', value: 'githook' },
@@ -93,7 +94,7 @@ export default {
   components: {
     Modal,
     Dropdown,
-    VueCode,
+    VlCode,
   },
   data() {
     return {
@@ -131,7 +132,7 @@ export default {
       this.onEdit({ type });
     },
     addMessage(text, className, delay = 3000) {
-      const messages = this.messages;
+      const { messages } = this;
       const message = {
         text,
         className,
@@ -217,7 +218,7 @@ export default {
 .project-title {
   font-size: 2rem;
 }
-.command-modal .modal-body {
+.command-modal .modal-content {
   display: flex;
   flex-direction: column;
   max-height: none;

@@ -1,18 +1,15 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/env", {
       "modules": false,
       "targets": {
         "node": "current",
       },
     }],
-    "stage-2",
+    "@babel/stage-2",
   ],
   "plugins": [
-    ["transform-runtime", {
-      "polyfill": false,
-    }],
-    "transform-export-extensions",
+    "@babel/transform-runtime",
   ],
   "comments": false
 }

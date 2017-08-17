@@ -112,7 +112,10 @@ export class API {
 
   _patch(method, path, ...args) {
     const middlewares = buildMiddlewares(args, options => {
-      const { key = this.defaultKey, Model, getData, query, after } = options;
+      const {
+        key = this.defaultKey,
+        Model, getData, query, after,
+      } = options;
       return wraps(async ctx => {
         const id = ctx.params[key];
         const { body } = ctx.request;
@@ -142,7 +145,9 @@ export class API {
 
   post(path, ...args) {
     const middlewares = buildMiddlewares(args, options => {
-      const { Model, getData, query, after } = options;
+      const {
+        Model, getData, query, after,
+      } = options;
       return wraps(async ctx => {
         const { body } = ctx.request;
         let data = body;

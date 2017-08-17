@@ -1,5 +1,4 @@
 import winston from 'winston';
-export * from 'src/common/helpers';
 
 export function getLogger(label) {
   return winston.loggers.get(label, {

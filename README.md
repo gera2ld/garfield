@@ -1,11 +1,11 @@
-web-commander
+Garfield
 ===
 
 This is a lite server to execute commands according to web requests.
 
 Usage
 ---
-1. Start web-commander:
+1. Start:
 
    ``` sh
    # Default address is `0.0.0.0:2333`
@@ -13,11 +13,11 @@ Usage
    ```
 
    Configuration can be overridden by `config.yml` or environment variables.
-   See [lib/config.js](lib/config.js).
+   See [src/server/config.js](src/server/config.js).
 
 1. Open dashboard, then add projects and commands.
 
-1. Make a request to web-commander:
+1. Make a request:
 
    ```
    POST http://server.address/cmd/command_name/command_type

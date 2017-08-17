@@ -60,13 +60,15 @@ const router = new Router({
     ctx.body = res.error;
     return;
   }
-  const { name, id, avatar_url, email, login } = res.data;
+  const {
+    name, id, avatar_url: avatar, email, login,
+  } = res.data;
   const userAttr = {
     openId: `github/${id}`,
     login,
     name,
     email,
-    avatar: avatar_url,
+    avatar,
   };
   await models.User.upsert(userAttr);
   const user = await models.User.findOne({

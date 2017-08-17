@@ -1,13 +1,16 @@
 import Koa from 'koa';
 import BodyParser from 'koa-bodyparser';
+import { objectGet } from '#/common/object';
 import nconf from '../config';
-import { getLogger, cookies, object, superPerm, events, consts } from '../utils';
+import { getLogger, cookies, superPerm, consts } from '../utils';
+import events from '../utils/events';
 import models from '../models';
 import initSocket from './socket';
 import routeAccount from '../routes/account';
 import routeStatic from '../routes/static';
 import routeAPI from '../routes/api';
 import routeCommand from '../routes/commands';
+import worker from './worker';
 
 const logger = getLogger('server');
 const TOKEN_KEY = nconf.get('TOKEN_KEY');
@@ -70,9 +73,11 @@ events.on('updateQueue', async () => {
   app.io.emit('updateQueue', queue);
 });
 
+worker.safeRun();
+
 async function checkAuth(ctx, next) {
   let user = cookies.get(ctx, TOKEN_KEY);
-  const id = object.get(user, 'id');
+  const id = objectGet(user, 'id');
   const model = id && await models.User.findOne({
     where: { id },
   });

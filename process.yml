@@ -1,4 +1,4 @@
 apps:
-  name: web-commander
-  script: lib/server
+  name: garfield
+  script: dist/server
   merge_logs: true

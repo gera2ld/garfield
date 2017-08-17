@@ -1,14 +1,14 @@
 <template>
-  <div id="app" class="container grid-960 flex flex-col">
+  <div id="app" class="container grid-lg flex flex-col">
     <header class="columns">
       <div class="brand hide-xs">
-        <strong>Cuckoo</strong>
+        <strong>Garfield</strong>
       </div>
       <nav class="navbar" v-if="menus.length">
         <router-link
           v-for="(menu, index) in menus"
           :key="index"
-          class="mr-5"
+          class="mr-2"
           :class="{ active: current === menu }"
           :to="menu.name"
           v-text="menu.title">
@@ -18,11 +18,11 @@
         <img :src="store.me.avatar">
         <span v-text="store.me.name"></span>
       </div>
+      <div class="hide-md">
+        <a class="github-button" href="https://github.com/gera2ld/garfield" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star gera2ld/garfield on GitHub">Star</a>
+      </div>
       <div class="navbar-copy hide-md">
-        <a class="github-button" href="https://github.com/gera2ld/web-commander" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star gera2ld/web-commander on GitHub">Star</a>
-        <div class="inline-block">
-          &copy; <a href="https://gerald.top">Gerald</a> 2017
-        </div>
+        &copy; <a href="https://gerald.top">Gerald</a> 2017
       </div>
     </header>
     <router-view class="flex-auto"></router-view>
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { store, object } from 'src/web/utils';
+import { store } from '#/web/utils';
+import { objectGet } from '#/common/object';
 import { routes } from '../router';
 
 export default {
@@ -52,7 +53,7 @@ export default {
     },
     current() {
       const { matched } = this.$route;
-      const currentName = object.get(matched, [matched.length - 1, 'name']);
+      const currentName = objectGet(matched, [matched.length - 1, 'name']);
       return this.menus.find(({ name }) => name === currentName);
     },
   },
@@ -83,7 +84,7 @@ header {
 .brand {
   position: relative;
   > strong {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   &::after {
     content: '>';
@@ -118,9 +119,5 @@ header {
 
 .navbar-copy {
   line-height: 36px;
-}
-
-.navbar-copy > * {
-  vertical-align: middle;
 }
 </style>

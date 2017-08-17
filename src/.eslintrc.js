@@ -18,7 +18,7 @@ module.exports = {
   'settings': {
     'import/resolver': {
       'webpack': {
-        'config': 'scripts/webpack.conf.js'
+        'config': 'scripts/webpack.web.conf.js'
       }
     }
   },
@@ -41,10 +41,14 @@ module.exports = {
     'consistent-return': ['off'],
     'no-use-before-define': ['error', 'nofunc'],
     'object-shorthand': ['error', 'always'],
-    'no-mixed-operators': ['error', {allowSamePrecedence: true}],
+    'no-mixed-operators': 'off',
     'no-bitwise': ['error', {int32Hint: true}],
     'no-underscore-dangle': ['off'],
     'arrow-parens': 0,
     'indent': ['error', 2, { MemberExpression: 0 }],
+    'no-alert': 'off',
+    'no-restricted-globals': 'off',
+    'prefer-promise-reject-errors': 'off',
+    'no-throw-literal': 'off',
   },
 }

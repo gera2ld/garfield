@@ -5,9 +5,10 @@ export default function initialize(app) {
   const events = [];
   const server = http.createServer(app.callback());
   app.listen = (...args) => server.listen(...args);
-  const io = app.io = SocketIO(server, {
+  const io = SocketIO(server, {
     path: '/ws/',
   });
+  app.io = io;
   io.route = (event, callback) => {
     events.push({ event, callback });
   };

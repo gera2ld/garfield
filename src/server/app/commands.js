@@ -1,5 +1,5 @@
 import models from '../models';
-import { events } from '../utils';
+import events from '../utils/events';
 
 const commandTypes = {
   heads: 'branch',

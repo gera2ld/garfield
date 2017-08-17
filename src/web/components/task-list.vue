@@ -21,7 +21,7 @@
           [<span class="text-muted" v-text="task.id"></span>]
         </div>
         <div class="column col-4 col-sm-10" v-text="getDesc(task)"></div>
-        <div class="column col-2 col-sm-3" v-text="task.status" :class="'task-status-'+task.status"></div>
+        <div class="column col-2 col-sm-3" v-text="getStatus(task.status)" :class="'task-status-'+task.status"></div>
         <div class="column col-2 col-sm-4 tooltip text-nowrap"
           :class="index > 0 ? 'tooltip-top' : 'tooltip-bottom'"
           v-text="duration(task)" :data-tooltip="timestamps(task)"></div>
@@ -34,7 +34,7 @@
     <modal class="task-detail" :visible="!!tasks.current" @close="onClose">
       <div class="modal-content" v-if="tasks.current">
         <h3>Task details</h3>
-        <div class="clearfix mb-10">
+        <div class="clearfix mb-2">
           <div class="float-right">
             Status: <span :class="`task-status-${tasks.current.status}`" v-text="tasks.current.status"></span>
           </div>
@@ -47,10 +47,17 @@
 </template>
 
 <script>
+import Modal from 'vueleton/lib/modal';
 import { emit, loadEnded } from '../services/tasks';
 import { Tasks } from '../services/restful';
 import { time, store } from '../utils';
-import { Modal } from './vueleton';
+
+const statuses = {
+  0: 'Pending',
+  1: 'Running',
+  2: 'Finished',
+  '-1': 'Error',
+};
 
 export default {
   components: {
@@ -118,6 +125,9 @@ export default {
       const { project } = command || { name: '???' };
       return `${project.name} | ${command.desc}`;
     },
+    getStatus(status) {
+      return statuses[status] || status;
+    },
   },
 };
 </script>
@@ -146,6 +156,8 @@ export default {
 .task-item {
   margin-left: 0;
   margin-right: 0;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
   &:hover {
     background: #eee;
   }

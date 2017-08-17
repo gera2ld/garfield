@@ -7,8 +7,12 @@ const api = new API({
 })
 
 .get('/me', permit(), wraps(ctx => {
-  const { id, name, avatar, permissions } = ctx.state.user;
-  ctx.body = { id, name, avatar, permissions };
+  const {
+    id, name, avatar, permissions,
+  } = ctx.state.user;
+  ctx.body = {
+    id, name, avatar, permissions,
+  };
 }, {
   doc: 'Load info of current user.',
 }))
