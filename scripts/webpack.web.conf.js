@@ -16,7 +16,7 @@ module.exports = {
   },
   output: {
     path: resolve('dist/web'),
-    publicPath: '/',
+    publicPath: '',
     filename: IS_DEV ? '[name].js' : '[name].[chunkhash:8].js',
   },
   resolve: {
