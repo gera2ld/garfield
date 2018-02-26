@@ -1,8 +1,9 @@
 import fs from 'fs';
 import send from 'koa-send';
+import getAccount from '../accounts';
 import nconf from '../config';
 
-const OAUTH2 = nconf.get('GITHUB_OAUTH2');
+const account = getAccount();
 
 const optionsStatic = {
   root: 'dist/web',
@@ -14,7 +15,7 @@ if (nconf.get('NODE_ENV') === 'production') {
 
 export default async ctx => {
   if (!ctx.state.user.id) {
-    ctx.redirect(OAUTH2);
+    ctx.redirect(account.getOAuth2URL());
     return;
   }
   let { path } = ctx;

@@ -1,45 +1,12 @@
-import fetch from 'node-fetch';
 import Router from 'koa-router';
-import { cookies } from '../utils';
 import nconf from '../config';
 import models from '../models';
+import { cookies, getLogger } from '../utils';
+import getAccount from '../accounts';
 
 const TOKEN_KEY = nconf.get('TOKEN_KEY');
-const CLIENT_ID = nconf.get('GITHUB_CLIENT_ID');
-const CLIENT_SECRET = nconf.get('GITHUB_CLIENT_SECRET');
-
-function parseJSON(res) {
-  return res.json()
-  .then(data => (res.ok ? { data } : { status: res.status, error: data }));
-}
-
-function fetchToken(code) {
-  const data = {
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    code,
-  };
-  return fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  .then(parseJSON);
-}
-
-function fetchAPI(token, path) {
-  return fetch(`https://api.github.com${path}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `token ${token}`,
-      Accept: 'application/json',
-    },
-  })
-  .then(parseJSON);
-}
+const account = getAccount();
+const logger = getLogger('account');
 
 const router = new Router({
   prefix: '/account',
@@ -50,21 +17,21 @@ const router = new Router({
     ctx.status = 400;
     return;
   }
-  let res = await fetchToken(code);
-  if (res.data) {
-    const { access_token: token } = res.data;
-    res = await fetchAPI(token, '/user');
-  }
-  if (res.error) {
-    ctx.status = res.status;
-    ctx.body = res.error;
+  let res;
+  try {
+    res = await account.getUserInfo(code);
+  } catch (err) {
+    logger.error(`log in error: ${err}`);
+    console.error(err.response);
+    ctx.status = 401;
+    ctx.body = 'Authentication failed!';
     return;
   }
   const {
     name, id, avatar_url: avatar, email, login,
   } = res.data;
   const userAttr = {
-    openId: `github/${id}`,
+    openId: `${account.key}/${id}`,
     login,
     name,
     email,

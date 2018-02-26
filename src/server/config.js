@@ -19,13 +19,20 @@ nconf
     dialect: 'sqlite',
     storage: path.resolve('data/db.sqlite3'),
   },
+  GITHUB: {
+    CLIENT_ID: null,
+    CLIENT_SECRET: null,
+  },
+  GITEE: {
+    CLIENT_ID: null,
+    CLIENT_SECRET: null,
+    REDIRECT_URI: null,
+  },
 });
 
 nconf.required([
   'SECRET_KEY',
-  'GITHUB_CLIENT_ID',
-  'GITHUB_CLIENT_SECRET',
+  'ACCOUNT',
 ]);
-nconf.set('GITHUB_OAUTH2', `https://github.com/login/oauth/authorize?client_id=${nconf.get('GITHUB_CLIENT_ID')}`);
 
 export default nconf;
