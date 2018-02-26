@@ -1,4 +1,8 @@
 set -e
+
+rm -rf dist
+yarn build
+
 DIST_PKG=dist.tar.gz
 BASE_DIR='~/Git/garfield'
 DATA_DIR=$BASE_DIR/data

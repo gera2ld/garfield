@@ -5,7 +5,9 @@
   "scripts": {
     "watch": "webpack --config scripts/webpack.conf.js -w",
     "start": "nodemon --watch dist/server dist/server",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "build": "NODE_ENV=production webpack --config scripts/webpack.conf.js",
+    "deploy": "sh scripts/deploy.sh"
   },
   "keywords": [
     "web",
