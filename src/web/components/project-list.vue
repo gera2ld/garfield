@@ -26,7 +26,7 @@
     </div>
     <command-list class="column col-8 flex flex-col flex-auto" v-if="current" :project="current"></command-list>
     <modal :visible="!!editing" @close="onCancel">
-      <form class="modal-content" v-if="editing">
+      <form class="modal-content" v-if="editing" @submit.prevent="onOK">
         <h3>Project details</h3>
         <div class="form-group">
           <label class="form-label">Name: *</label>

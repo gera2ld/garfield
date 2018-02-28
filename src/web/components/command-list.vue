@@ -40,7 +40,7 @@
       </div>
     </div>
     <modal class="command-modal" :visible="!!editing" @close="onCancel">
-      <form class="modal-content" v-if="editing" @submit="onOK">
+      <form class="modal-content" v-if="editing" @submit.prevent="onOK">
         <h3>Command details</h3>
         <div class="form-group">
           <label class="form-label">Type:</label>

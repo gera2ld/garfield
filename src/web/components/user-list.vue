@@ -33,7 +33,7 @@
       </tbody>
     </table>
     <modal :visible="!!editing" @close="onCancel">
-      <form class="modal-content d-inline-block" v-if="editing" @submit="onOK">
+      <form class="modal-content d-inline-block" v-if="editing" @submit.prevent="onOK">
         <h3>User permissions</h3>
         <div class="user mb-2">
           <img :src="editing.user.avatar">
