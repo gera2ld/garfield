@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import io from 'socket.io'; // eslint-disable-line import/no-extraneous-dependencies
 import Logs from '#/common/logs';
+import * as consts from '#/common/consts';
 import { formatLogs, store } from '../utils';
 import { Tasks } from './restful';
 
@@ -15,7 +16,7 @@ socket.on('update', data => {
   const i = store.queued.findIndex(item => item.id === id);
   if (i >= 0) {
     const item = Object.assign(store.queued[i], data);
-    if (['error', 'finished'].includes(item.status)) {
+    if ([consts.ERROR, consts.FINISHED].includes(item.status)) {
       store.queued.splice(i, 1);
       store.ended.unshift(item);
       // setTimeout(loadEnded, 1000);

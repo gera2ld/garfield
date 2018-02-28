@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import Logs from '#/common/logs';
 import config from '../config';
 import { getLogger, consts } from '../utils';
+import events from '../utils/events';
 import models from '../models';
 
 const logger = getLogger('task');
@@ -127,9 +128,8 @@ class Task extends EventEmitter {
   }
 }
 
-class Executor extends EventEmitter {
+class Executor {
   constructor(maxConcurrency) {
-    super();
     this.maxConcurrency = maxConcurrency || 1;
     this.queue = [];
     this.ready = Executor.resetRunning();
@@ -160,13 +160,13 @@ class Executor extends EventEmitter {
     const promise = new Promise(resolve => {
       const task = new Task(data);
       task.on('change', (taskData, changed) => {
-        this.emit('update', taskData, changed);
+        events.emit('update', taskData, changed);
         if ([
           consts.FINISHED,
           consts.ERROR,
         ].includes(taskData.status)) resolve(true);
       });
-      task.on('log', (taskData, chunk) => this.emit('log', taskData, chunk));
+      task.on('log', (taskData, chunk) => events.emit('log', taskData, chunk));
       task.start();
     })
     .then(checkMore => {

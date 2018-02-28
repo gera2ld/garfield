@@ -71,6 +71,7 @@ events.on('log', ({ id }, item) => {
 events.on('updateQueue', async () => {
   const queue = await listQueue();
   app.io.emit('updateQueue', queue);
+  worker.safeRun();
 });
 
 worker.safeRun();
